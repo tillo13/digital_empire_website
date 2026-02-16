@@ -1,0 +1,904 @@
+{% extends "base.html" %}
+
+{% block title %}Media Kit - Digital Empire Network{% endblock %}
+
+{% block header_buttons %}{% endblock %}
+
+{% block content %}
+<!-- Media Kit Hero Section -->
+<section class="hero-section">
+    <div class="hero-background"></div>
+    <div class="hero-content">
+        <h1 class="hero-title">
+            <span class="hero-title-main">Digital Empire Network</span>
+            <span class="hero-title-sub">Official Media Kit & Partnership Guide</span>
+        </h1>
+
+        <!-- Data Currency Notice with PDF Export -->
+        <div
+            style="background: rgba(255, 193, 7, 0.1); border: 1px solid rgba(255, 193, 7, 0.3); border-radius: 12px; padding: 24px; margin: 40px auto; max-width: 800px; text-align: left;">
+            <h3 style="color: #ffc107; margin: 0 0 12px 0; display: flex; align-items: center; gap: 10px;">
+                <span style="font-size: 24px;">📅</span>Data Currency Notice
+            </h3>
+            <p style="margin: 0 0 16px 0; color: var(--yt-spec-text-primary); line-height: 1.6;">
+                <strong>Data as of August 2025.</strong> For the most current performance metrics, subscriber counts,
+                and partnership rates, please
+                <a href="/contact" style="color: #ffc107; text-decoration: underline; font-weight: 600;">contact us
+                    directly</a>
+                to receive our latest analytics report and updated media kit.
+            </p>
+            <div style="text-align: center;">
+                <button onclick="window.print()"
+                    style="background: #ffc107; color: black; border: none; padding: 12px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; font-size: 14px; transition: all 0.2s ease;">
+                    <span style="font-size: 16px;">📄</span>
+                    Export as PDF
+                </button>
+            </div>
+        </div>
+
+        <!-- Network Power Stats -->
+        <div class="network-power-stats">
+            <div class="power-stat">
+                <div class="power-icon">📺</div>
+                <div class="power-number">{{ data.totals.views_formatted }}+</div>
+                <div class="power-label">Total Network Views</div>
+                <div class="power-context">Cumulative reach since 2011</div>
+            </div>
+            <div class="power-stat">
+                <div class="power-icon">🎯</div>
+                <div class="power-number">{{ data.totals.actual_weekly_views_formatted or '518.7K' }}</div>
+                <div class="power-label">Weekly Views</div>
+                <div class="power-context">Consistent weekly reach</div>
+            </div>
+            <div class="power-stat">
+                <div class="power-icon">👥</div>
+                <div class="power-number">{{ data.totals.subscribers_formatted }}</div>
+                <div class="power-label">Total Subscribers</div>
+                <div class="power-context">Across {{ data.totals.channels }} channels</div>
+            </div>
+            <div class="power-stat">
+                <div class="power-icon">🛡️</div>
+                <div class="power-number">100%</div>
+                <div class="power-label">Brand-Safe Content</div>
+                <div class="power-context">Family-friendly guarantee</div>
+            </div>
+        </div>
+
+        <!-- Performance Bar -->
+        <div class="performance-bar">
+            <div class="performance-item">
+                <span class="perf-label">Active Since</span>
+                <span class="perf-value">{{ data.totals.years_active }} Years</span>
+            </div>
+            <div class="performance-item">
+                <span class="perf-label">Viral Videos</span>
+                <span class="perf-value">{{ data.totals.viral_videos or 0 }} (10K+)</span>
+            </div>
+            <div class="performance-item">
+                <span class="perf-label">Million View Videos</span>
+                <span class="perf-value">{{ data.totals.million_view_videos or 0 }}</span>
+            </div>
+            <div class="performance-item">
+                <span class="perf-label">Quality Score</span>
+                <span class="perf-value">{{ data.totals.audience_quality_score or 80 }}/100</span>
+            </div>
+            <div class="performance-item">
+                <span class="perf-label">Engagement Rate</span>
+                <span class="perf-value">{{ "%.1f"|format(data.totals.average_engagement or 2.5) }}%</span>
+            </div>
+        </div>
+
+        <div class="hero-cta">
+            <button class="primary-cta-button" onclick="window.location.href='/contact'">
+                Start Your Partnership Today
+            </button>
+            <p class="cta-subtext">Premium family-safe gaming network for authentic brand connections</p>
+        </div>
+    </div>
+</section>
+
+<!-- Main Content -->
+<main class="main-content">
+    <!-- Audience Overview Section -->
+    <section class="partnership-section">
+        <div class="partnership-container">
+            <div class="partnership-header">
+                <h2 class="partnership-title">Our Audience & Family-Safe Guarantee</h2>
+                <p class="partnership-subtitle">Premium demographics with zero brand risk</p>
+            </div>
+
+            <div class="partnership-benefits">
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <svg viewBox="0 0 24 24" width="48" height="48">
+                            <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"></path>
+                        </svg>
+                    </div>
+                    <h3>100% Kid-Friendly Content</h3>
+                    <div class="benefit-stats">
+                        <span class="benefit-number">Zero</span>
+                        <span class="benefit-metric">Brand Risk</span>
+                    </div>
+                    <p>No inappropriate language, themes, or content. Every video is suitable for all ages with parents
+                        watching alongside their children.</p>
+                </div>
+
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <svg viewBox="0 0 24 24" width="48" height="48">
+                            <path
+                                d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3>Prime Demographics</h3>
+                    <div class="benefit-stats">
+                        <span class="benefit-number">68%</span>
+                        <span class="benefit-metric">Ages 25-44</span>
+                    </div>
+                    <p>Adult viewers with spending power who actively engage with gaming content and make purchasing
+                        decisions for their families.</p>
+                </div>
+
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <svg viewBox="0 0 24 24" width="48" height="48">
+                            <path
+                                d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3>High-Value US Audience</h3>
+                    <div class="benefit-stats">
+                        <span class="benefit-number">51%</span>
+                        <span class="benefit-metric">US Viewers</span>
+                    </div>
+                    <p>Majority US-based audience with high disposable income, perfect for consumer brands targeting
+                        American families.</p>
+                </div>
+
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <svg viewBox="0 0 24 24" width="48" height="48">
+                            <path d="M22 9 12 2 2 9l10 7 10-7zM22 9v10c0 5.55-3.84 10.74-9 12-5.16-1.26-9-6.45-9-12V9">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3>Family Co-Viewing</h3>
+                    <div class="benefit-stats">
+                        <span class="benefit-number">High</span>
+                        <span class="benefit-metric">Parent Engagement</span>
+                    </div>
+                    <p>Parents actively watch content with their children, creating dual-generational brand exposure and
+                        trust.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Channel Portfolio Section -->
+    <section class="network-section">
+        <div class="section-header">
+            <h2 class="section-title">Channel Portfolio by Performance Tier</h2>
+            <div class="sort-info">Transparent performance classification for strategic campaign planning</div>
+        </div>
+
+        <!-- Gold Tier Channels -->
+        <h3
+            style="font-size: 24px; color: #ffd700; margin: 40px 0 20px 0; display: flex; align-items: center; gap: 10px;">
+            <span style="font-size: 32px;">🏆</span>Gold Tier Channels
+        </h3>
+        <div class="channels-grid">
+            {% for channel in data.channels %}
+            {% if channel.performance_tier == 'Gold' %}
+            <article class="channel-card"
+                style="border: 2px solid #ffd700; background: linear-gradient(135deg, rgba(255, 215, 0, 0.05) 0%, var(--yt-spec-raised-background) 100%);">
+                <div class="channel-header" {% if channel.banner
+                    %}style="background-image: linear-gradient(to bottom, transparent, rgba(0,0,0,0.8)), url('{{ channel.banner }}')"
+                    {% endif %}>
+                    <div class="channel-badge" style="background: #ffd700; color: black;">🏆</div>
+                </div>
+
+                <div class="channel-body">
+                    <div class="channel-identity">
+                        <img src="{{ channel.thumbnail }}" alt="{{ channel.title }}" class="channel-avatar">
+                        <div class="channel-info">
+                            <h3 class="channel-title">{{ channel.title }}</h3>
+                            <p class="channel-handle">{{ channel.handle }}</p>
+                            <p class="channel-description">Premium reach and engagement</p>
+                        </div>
+                    </div>
+
+                    <div class="channel-metrics">
+                        <div class="metric">
+                            <div class="metric-value">{{ channel.subscriber_count_formatted }}</div>
+                            <div class="metric-label">Subscribers</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">{{ channel.view_count_formatted }}</div>
+                            <div class="metric-label">Total Views</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">{{ channel.monthly_reach_formatted or 'N/A' }}</div>
+                            <div class="metric-label">Monthly Reach</div>
+                        </div>
+                    </div>
+
+                    <div class="channel-performance">
+                        <div class="performance-row">
+                            <div class="perf-item">
+                                <span class="perf-icon">🔥</span>
+                                <span class="perf-label">Viral Videos:</span>
+                                <span class="perf-value">{{ channel.viral_videos or 0 }}</span>
+                            </div>
+                            <div class="perf-item">
+                                <span class="perf-icon">📊</span>
+                                <span class="perf-label">Avg Views:</span>
+                                <span class="perf-value">{{ channel.avg_views_per_video_formatted }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+            {% endif %}
+            {% endfor %}
+        </div>
+
+        <!-- Silver Tier Channels -->
+        <h3
+            style="font-size: 24px; color: #c0c0c0; margin: 40px 0 20px 0; display: flex; align-items: center; gap: 10px;">
+            <span style="font-size: 32px;">🥈</span>Silver Tier Channels
+        </h3>
+        <div class="channels-grid">
+            {% for channel in data.channels %}
+            {% if channel.performance_tier == 'Silver' %}
+            <article class="channel-card"
+                style="border: 2px solid #c0c0c0; background: linear-gradient(135deg, rgba(192, 192, 192, 0.05) 0%, var(--yt-spec-raised-background) 100%);">
+                <div class="channel-header" {% if channel.banner
+                    %}style="background-image: linear-gradient(to bottom, transparent, rgba(0,0,0,0.8)), url('{{ channel.banner }}')"
+                    {% endif %}>
+                    <div class="channel-badge" style="background: #c0c0c0; color: black;">🥈</div>
+                </div>
+
+                <div class="channel-body">
+                    <div class="channel-identity">
+                        <img src="{{ channel.thumbnail }}" alt="{{ channel.title }}" class="channel-avatar">
+                        <div class="channel-info">
+                            <h3 class="channel-title">{{ channel.title }}</h3>
+                            <p class="channel-handle">{{ channel.handle }}</p>
+                            <p class="channel-description">Strong engagement and loyal audience</p>
+                        </div>
+                    </div>
+
+                    <div class="channel-metrics">
+                        <div class="metric">
+                            <div class="metric-value">{{ channel.subscriber_count_formatted }}</div>
+                            <div class="metric-label">Subscribers</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">{{ channel.view_count_formatted }}</div>
+                            <div class="metric-label">Total Views</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">{{ channel.monthly_reach_formatted or 'N/A' }}</div>
+                            <div class="metric-label">Monthly Reach</div>
+                        </div>
+                    </div>
+
+                    <div class="channel-performance">
+                        <div class="performance-row">
+                            <div class="perf-item">
+                                <span class="perf-icon">🔥</span>
+                                <span class="perf-label">Viral Videos:</span>
+                                <span class="perf-value">{{ channel.viral_videos or 0 }}</span>
+                            </div>
+                            <div class="perf-item">
+                                <span class="perf-icon">📊</span>
+                                <span class="perf-label">Avg Views:</span>
+                                <span class="perf-value">{{ channel.avg_views_per_video_formatted }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+            {% endif %}
+            {% endfor %}
+        </div>
+
+        <!-- Fast Friends Growth Spotlight -->
+        <section
+            style="background: linear-gradient(135deg, rgba(76, 175, 80, 0.1) 0%, rgba(76, 175, 80, 0.05) 100%); padding: 60px 20px; margin: 40px auto; border-radius: 12px; max-width: 1200px;">
+            <div class="partnership-container">
+                <div class="partnership-header">
+                    <h2 class="partnership-title">🚀 Growth Channel Spotlight: Fast Friends</h2>
+                    <p class="partnership-subtitle">Explosive 4-month growth with aggressive daily content schedule</p>
+                </div>
+
+                <div class="partnership-benefits">
+                    <div class="benefit-card" style="border: 2px solid #4CAF50;">
+                        <div class="benefit-icon" style="background: #4CAF50; color: white;">
+                            <svg viewBox="0 0 24 24" width="48" height="48">
+                                <path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"
+                                    fill="currentColor" />
+                            </svg>
+                        </div>
+                        <h3>Rapid Subscriber Growth</h3>
+                        <div class="benefit-stats">
+                            <span class="benefit-number">19.9K</span>
+                            <span class="benefit-metric">in 4 Months</span>
+                        </div>
+                        <p>Started in April 2025, Fast Friends has already gained nearly 20,000 engaged subscribers with
+                            aggressive daily content strategy.</p>
+                    </div>
+
+                    <div class="benefit-card" style="border: 2px solid #4CAF50;">
+                        <div class="benefit-icon" style="background: #4CAF50; color: white;">
+                            <svg viewBox="0 0 24 24" width="48" height="48">
+                                <path
+                                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
+                                    fill="currentColor" />
+                            </svg>
+                        </div>
+                        <h3>Daily Content Velocity</h3>
+                        <div class="benefit-stats">
+                            <span class="benefit-number">7x</span>
+                            <span class="benefit-metric">Weekly</span>
+                        </div>
+                        <p>Aggressive <strong>daily posting schedule (7x weekly)</strong> with 60 videos published -
+                            maximum brand exposure frequency.</p>
+                    </div>
+
+                    <div class="benefit-card" style="border: 2px solid #4CAF50;">
+                        <div class="benefit-icon" style="background: #4CAF50; color: white;">
+                            <svg viewBox="0 0 24 24" width="48" height="48">
+                                <path
+                                    d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"
+                                    fill="currentColor" />
+                            </svg>
+                        </div>
+                        <h3>Impressive View Velocity</h3>
+                        <div class="benefit-stats">
+                            <span class="benefit-number">1.9M</span>
+                            <span class="benefit-metric">Total Views</span>
+                        </div>
+                        <p>Averaging <strong>31K views per video</strong> with 490K monthly reach - exceptional
+                            performance for a 4-month-old channel.</p>
+                    </div>
+
+                    <div class="benefit-card" style="border: 2px solid #4CAF50;">
+                        <div class="benefit-icon" style="background: #4CAF50; color: white;">
+                            <svg viewBox="0 0 24 24" width="48" height="48">
+                                <path
+                                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"
+                                    fill="currentColor" />
+                            </svg>
+                        </div>
+                        <h3>Early Adopter Advantage</h3>
+                        <div class="benefit-stats">
+                            <span class="benefit-number">Growth</span>
+                            <span class="benefit-metric">Trajectory</span>
+                        </div>
+                        <p>Partner with Fast Friends now for cost-effective access to a rapidly expanding audience with
+                            daily touchpoints.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Emerging Channels -->
+        <h3
+            style="font-size: 24px; color: #cd7f32; margin: 40px 0 20px 0; display: flex; align-items: center; gap: 10px;">
+            <span style="font-size: 32px;">🚀</span>Emerging & Growth Channels
+        </h3>
+        <div class="channels-grid">
+            {% for channel in data.channels %}
+            {% if channel.performance_tier == 'Bronze' %}
+            <article class="channel-card"
+                style="border: 2px solid #cd7f32; background: linear-gradient(135deg, rgba(205, 127, 50, 0.05) 0%, var(--yt-spec-raised-background) 100%);">
+                <div class="channel-header" {% if channel.banner
+                    %}style="background-image: linear-gradient(to bottom, transparent, rgba(0,0,0,0.8)), url('{{ channel.banner }}')"
+                    {% endif %}>
+                    <div class="channel-badge" style="background: #cd7f32; color: white;">🚀</div>
+                </div>
+
+                <div class="channel-body">
+                    <div class="channel-identity">
+                        <img src="{{ channel.thumbnail }}" alt="{{ channel.title }}" class="channel-avatar">
+                        <div class="channel-info">
+                            <h3 class="channel-title">
+                                {{ channel.title }}
+                                {% if 'Fast Friends' in channel.display_name %}<em
+                                    style="color: #4CAF50;">(Daily!)</em>{% endif %}
+                            </h3>
+                            <p class="channel-handle">{{ channel.handle }}</p>
+                            <p class="channel-description">
+                                {% if 'Fast Friends' in channel.display_name %}Daily content powerhouse{% else %}Niche
+                                audience focus{% endif %}
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="channel-metrics">
+                        <div class="metric">
+                            <div class="metric-value">{{ channel.subscriber_count_formatted }}</div>
+                            <div class="metric-label">Subscribers</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">{{ channel.view_count_formatted }}</div>
+                            <div class="metric-label">Total Views</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">{{ channel.monthly_reach_formatted or 'N/A' }}</div>
+                            <div class="metric-label">Monthly Reach</div>
+                        </div>
+                    </div>
+
+                    <div class="channel-performance">
+                        <div class="performance-row">
+                            <div class="perf-item">
+                                <span class="perf-icon">🔥</span>
+                                <span class="perf-label">Viral Videos:</span>
+                                <span class="perf-value">{{ channel.viral_videos or 0 }}</span>
+                            </div>
+                            <div class="perf-item">
+                                <span class="perf-icon">📊</span>
+                                <span class="perf-label">Avg Views:</span>
+                                <span class="perf-value">{{ channel.avg_views_per_video_formatted }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- Industry Rate Validation Section -->
+    <section class="partnership-section"
+        style="background: linear-gradient(135deg, rgba(33, 150, 243, 0.05) 0%, rgba(33, 150, 243, 0.02) 100%);">
+        <div class="partnership-container">
+            <div class="partnership-header">
+                <h2 class="partnership-title">Industry Rate Validation</h2>
+                <p class="partnership-subtitle">Our competitive pricing benchmarked against 2025 YouTube influencer
+                    marketing standards</p>
+            </div>
+
+            <div class="partnership-benefits">
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <svg viewBox="0 0 24 24" width="48" height="48">
+                            <path
+                                d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"
+                                fill="currentColor" />
+                        </svg>
+                    </div>
+                    <h3>YouTube Premium Rates</h3>
+                    <div class="benefit-stats">
+                        <span class="benefit-number">$500-10K</span>
+                        <span class="benefit-metric">Per Video</span>
+                    </div>
+                    <p><strong>Industry Standard:</strong> "Expect to pay $500-$10,000 per video for average influencers
+                        and upwards of $20,000 for celebrity influencers" - Mayple 2025</p>
+                </div>
+
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <svg viewBox="0 0 24 24" width="48" height="48">
+                            <path
+                                d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
+                                fill="currentColor" />
+                        </svg>
+                    </div>
+                    <h3>Gaming Content Premium</h3>
+                    <div class="benefit-stats">
+                        <span class="benefit-number">$180+</span>
+                        <span class="benefit-metric">Gaming Average</span>
+                    </div>
+                    <p><strong>Gaming Niche:</strong> "Gaming influencers charge $180 for a sponsored post on their
+                        social media in 2025" - Collabstr. Our multi-video campaigns provide superior value.</p>
+                </div>
+
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <svg viewBox="0 0 24 24" width="48" height="48">
+                            <path
+                                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"
+                                fill="currentColor" />
+                        </svg>
+                    </div>
+                    <h3>High-Reach Channel Rates</h3>
+                    <div class="benefit-stats">
+                        <span class="benefit-number">£15K+</span>
+                        <span class="benefit-metric">500K+ Subs</span>
+                    </div>
+                    <p><strong>Large Creator Rates:</strong> "Creators (200,000 to 500,000 subscribers) charging up to
+                        £15,000 for a video dedicated to the brand" - CORQ Studio (~$18,500 USD)</p>
+                </div>
+
+                <div class="benefit-card"
+                    style="border: 2px solid #4CAF50; background: linear-gradient(135deg, rgba(76, 175, 80, 0.1) 0%, var(--yt-spec-raised-background) 100%);">
+                    <div class="benefit-icon" style="background: #4CAF50; color: white;">
+                        <svg viewBox="0 0 24 24" width="48" height="48">
+                            <path
+                                d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"
+                                fill="currentColor" />
+                        </svg>
+                    </div>
+                    <h3>Our Competitive Advantage</h3>
+                    <div class="benefit-stats">
+                        <span class="benefit-number">20-30%</span>
+                        <span class="benefit-metric">Below Market</span>
+                    </div>
+                    <p><strong>Strategic Pricing:</strong> Our network rates are positioned 20-30% below individual
+                        creator costs while delivering coordinated multi-channel reach and guaranteed family-safe
+                        content.</p>
+                </div>
+            </div>
+
+            <div
+                style="background: rgba(33, 150, 243, 0.1); padding: 24px; border-radius: 12px; margin-top: 40px; text-align: center;">
+                <h4 style="color: #2196F3; margin: 0 0 12px 0; font-size: 18px;">📊 Market Validation</h4>
+                <p style="margin: 0; line-height: 1.6; font-size: 14px;">
+                    <strong>Industry Growth:</strong> "US sponsored content spending will surpass $10 billion in 2025" -
+                    eMarketer |
+                    <strong>Campaign ROI:</strong> "These sponsorships convert 9.6 times the rate of organic search
+                    traffic" - Mayple |
+                    <strong>Budget Reality:</strong> "47.4% of respondents spent less than $10,000 on influencer
+                    marketing in 2024" - Influencer Marketing Hub
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Partnership Options Section -->
+    <section class="partnership-section">
+        <div class="partnership-container">
+            <div class="partnership-header">
+                <h2 class="partnership-title">Partnership Investment Options</h2>
+                <p class="partnership-subtitle">Flexible campaign formats designed for maximum brand impact</p>
+            </div>
+
+            <div class="partnership-benefits">
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <svg viewBox="0 0 24 24" width="48" height="48">
+                            <path
+                                d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3>Network-Wide Campaigns</h3>
+                    <div class="benefit-stats">
+                        <span class="benefit-number">$15K-30K</span>
+                        <span class="benefit-metric">Investment Range</span>
+                    </div>
+                    <p><strong>Reach:</strong> {{ data.totals.actual_weekly_views_formatted or '518K+' }} weekly
+                        views<br>
+                        <strong>Format:</strong> Coordinated mentions across all channels<br>
+                        <strong>Guarantee:</strong> All content pre-approved for family viewing
+                    </p>
+                </div>
+
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <svg viewBox="0 0 24 24" width="48" height="48">
+                            <path
+                                d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3>Tier-Targeted Campaigns</h3>
+                    <div class="benefit-stats">
+                        <span class="benefit-number">$8K-15K</span>
+                        <span class="benefit-metric">Investment Range</span>
+                    </div>
+                    <p><strong>Focus:</strong> Gold Tier channels<br>
+                        <strong>Reach:</strong> Combined premium audience<br>
+                        <strong>Format:</strong> Feature integrations + gameplay
+                    </p>
+                </div>
+
+                <div class="benefit-card" style="border: 2px solid #4CAF50;">
+                    <div class="benefit-icon" style="background: #4CAF50; color: white;">
+                        <svg viewBox="0 0 24 24" width="48" height="48">
+                            <path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z" />
+                        </svg>
+                    </div>
+                    <h3>Fast Friends Growth Focus</h3>
+                    <div class="benefit-stats">
+                        <span class="benefit-number">$2K-4K</span>
+                        <span class="benefit-metric">Investment Range</span>
+                    </div>
+                    <p><strong>Channel:</strong> Fast Friends explosive growth (19.9K in 4 months)<br>
+                        <strong>Format:</strong> Dedicated video features<br>
+                        <strong>Audience:</strong> Rapidly expanding, highly engaged
+                    </p>
+                </div>
+
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <svg viewBox="0 0 24 24" width="48" height="48">
+                            <path
+                                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3>Custom Multi-Format</h3>
+                    <div class="benefit-stats">
+                        <span class="benefit-number">Custom</span>
+                        <span class="benefit-metric">Pricing</span>
+                    </div>
+                    <p><strong>Options:</strong> Long-form gameplay integrations<br>
+                        <strong>Plus:</strong> Short-form social content<br>
+                        <strong>Bonus:</strong> Cross-platform amplification
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Investment Value Section -->
+    <section class="partnership-section"
+        style="background: linear-gradient(135deg, rgba(255, 0, 0, 0.05) 0%, rgba(255, 0, 0, 0.02) 100%);">
+        <div class="partnership-container">
+            <div class="partnership-header">
+                <h2 class="partnership-title">The Kid-Friendly Advantage</h2>
+                <p class="partnership-subtitle">Why family-safe content delivers superior brand value</p>
+            </div>
+
+            <div class="partnership-benefits">
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <svg viewBox="0 0 24 24" width="48" height="48">
+                            <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"></path>
+                        </svg>
+                    </div>
+                    <h3>Zero Brand Risk</h3>
+                    <div class="benefit-stats">
+                        <span class="benefit-number">100%</span>
+                        <span class="benefit-metric">Safe Content</span>
+                    </div>
+                    <p>No controversial content ever eliminates PR risks and negative brand associations</p>
+                </div>
+
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <svg viewBox="0 0 24 24" width="48" height="48">
+                            <path d="M22 9 12 2 2 9l10 7 10-7zM22 9v10c0 5.55-3.84 10.74-9 12-5.16-1.26-9-6.45-9-12V9">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3>Higher Trust Factor</h3>
+                    <div class="benefit-stats">
+                        <span class="benefit-number">Premium</span>
+                        <span class="benefit-metric">Brand Association</span>
+                    </div>
+                    <p>Parents trust our content with their children, creating positive brand halo effects</p>
+                </div>
+
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <svg viewBox="0 0 24 24" width="48" height="48">
+                            <path
+                                d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3>Long-Term Partnerships</h3>
+                    <div class="benefit-stats">
+                        <span class="benefit-number">{{ data.totals.years_active }}+</span>
+                        <span class="benefit-metric">Years Proven</span>
+                    </div>
+                    <p>Sustainable, controversy-free content ensures reliable partnership opportunities</p>
+                </div>
+
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <svg viewBox="0 0 24 24" width="48" height="48">
+                            <path
+                                d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3>Cost-Effective Reach</h3>
+                    <div class="benefit-stats">
+                        <span class="benefit-number">65%</span>
+                        <span class="benefit-metric">Cost Savings</span>
+                    </div>
+                    <p>Compared to TV advertising, achieve higher engagement at significantly lower investment</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Individual Channel Media Kits -->
+    <section class="network-section">
+        <div class="section-header">
+            <h2 class="section-title">Individual Channel Media Kits</h2>
+            <div class="sort-info">YouTube BrandConnect certified channels with detailed analytics</div>
+        </div>
+
+        <div class="channels-grid">
+            <article class="channel-card"
+                style="border: 2px solid #ffd700; background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, var(--yt-spec-raised-background) 100%);">
+                <div class="channel-header"
+                    style="background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%); color: black;">
+                    <div class="channel-badge" style="background: black; color: #ffd700;">🏆 CERTIFIED</div>
+                </div>
+
+                <div class="channel-body">
+                    <div class="channel-identity">
+                        <img src="https://yt3.ggpht.com/kwxA1ahqjce7dsspZqgjRExVWbw_bRy7KTXKsij4fMwCDz_OWgv1QHiB_Nmromg-Ywly68pnRGY=s800-c-k-c0x00ffffff-no-rj"
+                            alt="Red Ninja" class="channel-avatar">
+                        <div class="channel-info">
+                            <h3 class="channel-title">Red Ninja - YouTube BrandConnect Certified</h3>
+                            <p class="channel-handle">@realredninja</p>
+                            <p class="channel-description">Premium demographics with high family engagement</p>
+                        </div>
+                    </div>
+
+                    <div class="channel-metrics">
+                        <div class="metric">
+                            <div class="metric-value">819K</div>
+                            <div class="metric-label">Subscribers</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">87.8M</div>
+                            <div class="metric-label">Total Views</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">1.2M</div>
+                            <div class="metric-label">Monthly Reach</div>
+                        </div>
+                    </div>
+
+                    <div class="channel-actions">
+                        <a href="{{ url_for('static', filename='files/redninja_mediakit_2025aug.pdf') }}"
+                            target="_blank" class="channel-link"
+                            onclick="gtag('event', 'download', {'event_category': 'media_kit', 'event_label': 'red_ninja_pdf'});">
+                            <svg viewBox="0 0 24 24" width="16" height="16">
+                                <path
+                                    d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z" />
+                            </svg>
+                            <span>Download PDF Media Kit</span>
+                        </a>
+                    </div>
+                </div>
+            </article>
+        </div>
+
+        <p style="margin-top: 20px; color: var(--yt-spec-text-secondary); font-style: italic; text-align: center;">
+            More individual channel media kits coming soon as additional channels qualify for YouTube BrandConnect
+            certification.
+        </p>
+    </section>
+
+    <!-- Verification & Contact Section -->
+    <section class="partnership-section">
+        <div class="partnership-container">
+            <div class="partnership-header">
+                <h2 class="partnership-title">Verification & Contact</h2>
+                <p class="partnership-subtitle">Independently verify our metrics and start your partnership</p>
+            </div>
+
+            <div class="partnership-benefits" style="grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));">
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <svg viewBox="0 0 24 24" width="48" height="48">
+                            <path
+                                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3>Independent Verification</h3>
+                    <div style="text-align: left; margin-top: 20px;">
+                        <p><strong>Social Blade Analytics & YouTube Channels:</strong></p>
+                        <ul style="list-style: none; padding: 0; margin: 10px 0;">
+                            {% for channel in data.channels[:4] %}
+                            <li
+                                style="margin: 12px 0; padding: 8px; background: rgba(255,255,255,0.05); border-radius: 6px;">
+                                <div style="font-weight: 600; margin-bottom: 4px;">{{ channel.display_name }}</div>
+                                <div style="display: flex; gap: 12px; font-size: 13px;">
+                                    <a href="https://www.youtube.com/channel/{{ channel.channel_id }}" target="_blank"
+                                        style="color: #ff0000; text-decoration: none; font-weight: 500;">
+                                        📺 YouTube →
+                                    </a>
+                                    <a href="https://socialblade.com/youtube/channel/{{ channel.channel_id }}"
+                                        target="_blank"
+                                        style="color: var(--yt-spec-call-to-action); text-decoration: none; font-weight: 500;">
+                                        📊 Social Blade →
+                                    </a>
+                                </div>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                        <p style="margin-top: 15px;"><strong>All statistics independently verifiable</strong> - We
+                            encourage due diligence</p>
+                    </div>
+                </div>
+
+                <div class="benefit-card"
+                    style="background: var(--yt-spec-brand-red); color: white; border-color: var(--yt-spec-brand-red);">
+                    <div class="benefit-icon" style="background: white; color: var(--yt-spec-brand-red);">
+                        <svg viewBox="0 0 24 24" width="48" height="48">
+                            <path
+                                d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
+                        </svg>
+                    </div>
+                    <h3 style="color: white;">Partnership Contact</h3>
+                    <div style="text-align: center; margin: 20px 0;">
+                        <p style="font-size: 18px; margin-bottom: 15px;"><strong>Digital Empire Network</strong></p>
+                        <p style="margin-bottom: 10px;">Website: <strong>digitalempiretv.com</strong></p>
+                        <p style="margin-bottom: 20px;">Response: <strong>Within 24 hours</strong></p>
+                        <a href="/contact"
+                            style="display: inline-block; background: white; color: var(--yt-spec-brand-red); padding: 12px 24px; border-radius: 20px; text-decoration: none; font-weight: 600; margin-top: 10px;">
+                            Start Partnership Discussion
+                        </a>
+                    </div>
+                    <p style="font-style: italic; opacity: 0.9; margin-top: 20px;">
+                        "Connecting brands with engaged gaming audiences through authentic, family-safe content"
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Notice -->
+    <div
+        style="background: var(--yt-spec-menu-background); padding: 32px; border-radius: 12px; text-align: center; color: var(--yt-spec-text-secondary); font-size: 14px; margin-top: 40px;">
+        This media kit represents network performance as of <strong>August 2025</strong>. All metrics are independently
+        verifiable through Social Blade links above and YouTube Analytics. We maintain 100% transparency in our
+        partnership reporting and encourage brands to verify our family-friendly content and metrics independently.
+        <strong><a href="/contact" style="color: var(--yt-spec-brand-red); text-decoration: underline;">Contact us</a>
+            for the most current data and partnership rates.</strong>
+    </div>
+</main>
+
+<style>
+    @media print {
+        .hero-section {
+            page-break-inside: avoid;
+        }
+
+        .partnership-section,
+        .network-section {
+            page-break-inside: avoid;
+            margin-bottom: 30px;
+        }
+
+        .channels-grid {
+            display: grid !important;
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 20px !important;
+        }
+
+        .channel-card {
+            page-break-inside: avoid;
+        }
+
+        /* Hide navigation and other non-essential elements for print */
+        nav,
+        .hero-cta,
+        button:not([onclick="window.print()"]) {
+            display: none !important;
+        }
+
+        /* Adjust colors for print */
+        body {
+            background: white !important;
+            color: black !important;
+        }
+
+        .benefit-card,
+        .channel-card {
+            border: 1px solid #ccc !important;
+            background: white !important;
+        }
+    }
+</style>
+
+{% endblock %}
+
+{% block footer_stats %}{% endblock %}
+{% block footer_extra %}{% endblock %}

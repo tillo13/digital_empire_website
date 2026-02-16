@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Digital Empire Network{% endblock %}</title>
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-B876QNS855"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-B876QNS855');
+    </script>
+
+    <!-- Modular CSS Structure -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pages.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/about-components.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/responsive.css') }}">
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=YouTube+Sans:wght@300;400;500;700;900&family=Roboto:wght@300;400;500;700;900&display=swap"
+        rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    {% block extra_styles %}{% endblock %}
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <div class="header-start">
+                <button class="icon-button menu-button" onclick="toggleSidebar()">
+                    <svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet">
+                        <path d="M21,6H3V5h18V6z M21,11H3v1h18V11z M21,17H3v1h18V17z"></path>
+                    </svg>
+                </button>
+                <a href="/" class="logo-container">
+                    <div class="logo-icon">
+                        <svg viewBox="0 0 90 20" preserveAspectRatio="xMidYMid meet">
+                            <g>
+                                <path
+                                    d="M27.9727 3.12324C27.6435 1.89323 26.6768 0.926623 25.4468 0.597366C23.2197 2.24288e-07 14.285 0 14.285 0C14.285 0 5.35042 2.24288e-07 3.12323 0.597366C1.89323 0.926623 0.926623 1.89323 0.597366 3.12324C2.24288e-07 5.35042 0 10 0 10C0 10 2.24288e-07 14.6496 0.597366 16.8768C0.926623 18.1068 1.89323 19.0734 3.12323 19.4026C5.35042 20 14.285 20 14.285 20C14.285 20 23.2197 20 25.4468 19.4026C26.6768 19.0734 27.6435 18.1068 27.9727 16.8768C28.5701 14.6496 28.5701 10 28.5701 10C28.5701 10 28.5677 5.35042 27.9727 3.12324Z"
+                                    fill="#FF0000"></path>
+                                <path d="M11.4253 14.2854L18.8477 10.0004L11.4253 5.71533V14.2854Z" fill="white"></path>
+                            </g>
+                        </svg>
+                    </div>
+                    <span class="logo-text">Digital Empire</span>
+                    <span class="network-badge">NETWORK</span>
+                </a>
+            </div>
+
+            <div class="header-center">
+                <div class="search-container">
+                    <form class="search-form">
+                        <input type="text" placeholder="Search our network" class="search-input">
+                        <button class="search-button" type="button">
+                            <svg viewBox="0 0 24 24">
+                                <path
+                                    d="M20.87,20.17l-5.59-5.59C16.35,13.35,17,11.75,17,10c0-3.87-3.13-7-7-7s-7,3.13-7,7s3.13,7,7,7c1.75,0,3.35-0.65,4.58-1.71 l5.59,5.59L20.87,20.17z M10,16c-3.31,0-6-2.69-6-6s2.69-6,6-6s6,2.69,6,6S13.31,16,10,16z">
+                                </path>
+                            </svg>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="header-end">
+                <!-- Header Pills Navigation -->
+                <div class="header-pills">
+                    <a href="/" class="header-pill {% if request.endpoint == 'index' %}active{% endif %}">Home</a>
+                    <a href="/about" class="header-pill {% if request.endpoint == 'about' %}active{% endif %}">About</a>
+                    <a href="/media_kit"
+                        class="header-pill {% if request.endpoint == 'media_kit' %}active{% endif %}">Media Kit</a>
+                    <a href="/contact"
+                        class="header-pill {% if request.endpoint == 'contact' %}active{% endif %}">Contact</a>
+                </div>
+                {% block header_buttons %}{% endblock %}
+            </div>
+        </div>
+    </header>
+
+    <!-- Sidebar Navigation -->
+    <nav id="sidebar" class="sidebar">
+        <div class="sidebar-header">
+            <button class="icon-button close-sidebar" onclick="toggleSidebar()">
+                <svg viewBox="0 0 24 24">
+                    <path
+                        d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z">
+                    </path>
+                </svg>
+            </button>
+            <a href="/" class="logo-container">
+                <span class="logo-text">Digital Empire</span>
+            </a>
+        </div>
+        <div class="sidebar-content">
+            <div class="sidebar-section">
+                <a href="/" class="sidebar-item {% if request.endpoint == 'index' %}active{% endif %}">
+                    <svg class="sidebar-icon" viewBox="0 0 24 24">
+                        <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+                    </svg>
+                    Home
+                </a>
+                <a href="/about" class="sidebar-item {% if request.endpoint == 'about' %}active{% endif %}">
+                    <svg class="sidebar-icon" viewBox="0 0 24 24">
+                        <path
+                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
+                    </svg>
+                    About Us
+                </a>
+                <a href="/media_kit" class="sidebar-item {% if request.endpoint == 'media_kit' %}active{% endif %}">
+                    <svg class="sidebar-icon" viewBox="0 0 24 24">
+                        <path
+                            d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z" />
+                    </svg>
+                    Media Kit
+                </a>
+                <a href="/contact" class="sidebar-item {% if request.endpoint == 'contact' %}active{% endif %}">
+                    <svg class="sidebar-icon" viewBox="0 0 24 24">
+                        <path
+                            d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
+                    </svg>
+                    Contact Us
+                </a>
+            </div>
+        </div>
+    </nav>
+    <div id="sidebar-overlay" class="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+    <!-- Main Content -->
+    {% block content %}{% endblock %}
+
+    <!-- Mobile Bottom Navigation - LinkedIn Style -->
+    <nav class="mobile-bottom-nav">
+        <div class="mobile-nav-container">
+            <a href="/" class="mobile-nav-item {% if request.endpoint == 'index' %}active{% endif %}">
+                <svg class="mobile-nav-icon" viewBox="0 0 24 24">
+                    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+                </svg>
+                <span class="mobile-nav-label">Home</span>
+            </a>
+
+            <a href="/about" class="mobile-nav-item {% if request.endpoint == 'about' %}active{% endif %}">
+                <svg class="mobile-nav-icon" viewBox="0 0 24 24">
+                    <path
+                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
+                </svg>
+                <span class="mobile-nav-label">About</span>
+            </a>
+
+            <a href="/media_kit" class="mobile-nav-item {% if request.endpoint == 'media_kit' %}active{% endif %}">
+                <svg class="mobile-nav-icon" viewBox="0 0 24 24">
+                    <path
+                        d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z" />
+                </svg>
+                <span class="mobile-nav-label">Media Kit</span>
+            </a>
+
+            <a href="/contact" class="mobile-nav-item {% if request.endpoint == 'contact' %}active{% endif %}">
+                <svg class="mobile-nav-icon" viewBox="0 0 24 24">
+                    <path
+                        d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
+                </svg>
+                <span class="mobile-nav-label">Contact</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Digital Empire Network</h4>
+                <p>The premier YouTube gaming network for brand partnerships</p>
+                {% block footer_stats %}
+                <div class="footer-stats">
+                    <span>{{ data.totals.views_formatted }}+ Total Views</span>
+                    <span>•</span>
+                    <span>{{ data.totals.subscribers_formatted }}+ Subscribers</span>
+                    <span>•</span>
+                    <span>7 Active Channels</span>
+                </div>
+                {% endblock %}
+            </div>
+            <div class="footer-section">
+                <h4>Partnership Inquiries</h4>
+                <p>Use our contact form</p>
+                <p>Response within 24 hours</p>
+                <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.1);">
+                    <p style="font-size: 0.9em; opacity: 0.9;">
+                        <em>Growing our network: We acquire gaming domains & channels.
+                            <a href="/contact" style="color: #ff0000; text-decoration: underline;">Learn more</a></em>
+                    </p>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Stats</h4>
+                <p>{{ data.totals.actual_monthly_views_formatted|default('2M+') }} Monthly Views</p>
+                <p>Premium Content Standards</p>
+                <p>Global Gaming Audience</p>
+                <p>Daily Content Updates</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2025 Digital Empire Network. All rights reserved. A premium YouTube certified partner.</p>
+            {% block footer_extra %}
+            <p class="update-info">Analytics updated: {{ data.last_updated }}</p>
+            {% endblock %}
+        </div>
+    </footer>
+
+    <!-- Notification System -->
+    <div id="notification" class="notification">
+        <div class="notification-content">
+            <svg class="notification-icon" viewBox="0 0 24 24">
+                <path
+                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+            </svg>
+            <span class="notification-text"></span>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/custom.js') }}"></script>
+
+    <!-- Enhanced Analytics Tracking -->
+    <script>
+        // Track page views with custom dimensions
+        gtag('event', 'page_view', {
+            'page_title': document.title,
+            'page_location': window.location.href,
+            'page_path': window.location.pathname,
+            'network_views': '{{ data.totals.views_formatted }}',
+            'network_subscribers': '{{ data.totals.subscribers_formatted }}'
+        });
+
+        // Track user interactions
+        document.addEventListener('DOMContentLoaded', function () {
+            // Track header pill clicks
+            document.querySelectorAll('.header-pill').forEach(function (pill) {
+                pill.addEventListener('click', function () {
+                    const pillText = this.textContent;
+                    gtag('event', 'click', {
+                        'event_category': 'navigation',
+                        'event_label': 'header_pill_' + pillText.toLowerCase(),
+                        'value': 1
+                    });
+                });
+            });
+
+            // Track mobile nav clicks
+            document.querySelectorAll('.mobile-nav-item').forEach(function (navItem) {
+                navItem.addEventListener('click', function () {
+                    const navText = this.querySelector('.mobile-nav-label').textContent;
+                    gtag('event', 'click', {
+                        'event_category': 'navigation',
+                        'event_label': 'mobile_nav_' + navText.toLowerCase(),
+                        'value': 1
+                    });
+                });
+            });
+
+            // Track channel link clicks
+            document.querySelectorAll('.channel-link').forEach(function (link) {
+                link.addEventListener('click', function () {
+                    const channelName = this.closest('.channel-card').querySelector('.channel-title').textContent;
+                    gtag('event', 'click', {
+                        'event_category': 'channel_visit',
+                        'event_label': channelName,
+                        'value': 1
+                    });
+                });
+            });
+
+            // Track video clicks
+            document.querySelectorAll('.video-tile').forEach(function (video) {
+                video.addEventListener('click', function () {
+                    const videoTitle = this.querySelector('.video-title').textContent;
+                    gtag('event', 'click', {
+                        'event_category': 'video_view',
+                        'event_label': videoTitle,
+                        'value': 1
+                    });
+                });
+            });
+
+            // Track CTA button clicks
+            document.querySelectorAll('.cta-primary, .cta-secondary').forEach(function (button) {
+                button.addEventListener('click', function () {
+                    const buttonText = this.textContent;
+                    const buttonType = this.classList.contains('cta-primary') ? 'primary' : 'secondary';
+                    gtag('event', 'click', {
+                        'event_category': 'cta',
+                        'event_label': buttonText,
+                        'event_value': buttonType,
+                        'value': buttonType === 'primary' ? 10 : 5
+                    });
+                });
+            });
+
+            // Track search usage
+            const searchForm = document.querySelector('.search-form');
+            if (searchForm) {
+                searchForm.addEventListener('submit', function (e) {
+                    e.preventDefault();
+                    const searchQuery = this.querySelector('.search-input').value;
+                    if (searchQuery) {
+                        gtag('event', 'search', {
+                            'search_term': searchQuery
+                        });
+                    }
+                });
+            }
+
+            // Track scroll depth
+            let scrollDepths = [25, 50, 75, 90];
+            let scrolled = [];
+
+            window.addEventListener('scroll', function () {
+                const scrollPercent = Math.round((window.scrollY + window.innerHeight) / document.body.scrollHeight * 100);
+
+                scrollDepths.forEach(function (depth) {
+                    if (scrollPercent >= depth && !scrolled.includes(depth)) {
+                        scrolled.push(depth);
+                        gtag('event', 'scroll', {
+                            'event_category': 'engagement',
+                            'event_label': 'scroll_depth',
+                            'value': depth
+                        });
+                    }
+                });
+            });
+
+            // Track time on page
+            let startTime = new Date().getTime();
+            window.addEventListener('beforeunload', function () {
+                const timeOnPage = Math.round((new Date().getTime() - startTime) / 1000);
+                gtag('event', 'timing_complete', {
+                    'name': 'time_on_page',
+                    'value': timeOnPage,
+                    'event_category': 'engagement'
+                });
+            });
+        });
+    </script>
+
+    {% block extra_scripts %}{% endblock %}
+</body>
+
+</html>

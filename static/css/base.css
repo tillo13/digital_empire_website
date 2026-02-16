@@ -1,0 +1,370 @@
+/* ========================================
+   BASE.CSS - CORE STYLES
+   Variables, Reset, Header, Footer, Sidebar
+   ======================================== */
+
+/* ========================================
+   1. CSS VARIABLES & RESET
+   ======================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    /* YouTube Dark Theme Colors */
+    --yt-spec-base-background: #0f0f0f;
+    --yt-spec-raised-background: #212121;
+    --yt-spec-menu-background: #282828;
+    --yt-spec-text-primary: #fff;
+    --yt-spec-text-secondary: #aaa;
+    --yt-spec-text-disabled: #717171;
+    --yt-spec-call-to-action: #3ea6ff;
+    --yt-spec-icon-inactive: #909090;
+    --yt-spec-brand-red: #ff0000;
+    --yt-spec-brand-red-darker: #cc0000;
+    --yt-spec-10-percent-layer: rgba(255,255,255,0.1);
+    --yt-spec-outline: rgba(255,255,255,0.2);
+    --yt-spec-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    --yt-spec-shadow-raised: 0 4px 32px rgba(0,0,0,0.1);
+}
+
+body {
+    font-family: "Roboto", "Arial", sans-serif;
+    background-color: var(--yt-spec-base-background);
+    color: var(--yt-spec-text-primary);
+    line-height: 1.4;
+    font-size: 14px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* ========================================
+   2. HEADER & NAVIGATION
+   ======================================== */
+
+/* Header */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 56px;
+    background-color: var(--yt-spec-base-background);
+    z-index: 2000;
+    padding: 0 16px;
+    border-bottom: 1px solid var(--yt-spec-outline);
+}
+
+.header-container {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 100%;
+}
+
+.header-start {
+    display: flex;
+    align-items: center;
+    flex: 0 1 auto;
+}
+
+.icon-button {
+    width: 40px;
+    height: 40px;
+    padding: 8px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--yt-spec-text-primary);
+    transition: background-color 0.2s;
+}
+
+.icon-button:hover {
+    background-color: var(--yt-spec-10-percent-layer);
+}
+
+.icon-button svg {
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
+}
+
+/* Logo */
+.logo-container {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    margin-left: 16px;
+    gap: 8px;
+}
+
+.logo-icon svg {
+    width: 90px;
+    height: 20px;
+}
+
+.logo-text {
+    font-family: "YouTube Sans", "Roboto", sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--yt-spec-text-primary);
+    letter-spacing: -0.5px;
+}
+
+.network-badge {
+    background: var(--yt-spec-brand-red);
+    color: white;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+/* Search */
+.header-center {
+    flex: 0 1 500px; /* Reduced for pill navigation */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 20px;
+}
+
+.search-container {
+    flex: 1;
+    max-width: 400px; /* Reduced for pill navigation */
+}
+
+.search-form {
+    display: flex;
+    height: 40px;
+    flex: 1;
+}
+
+.search-input {
+    flex: 1;
+    background-color: var(--yt-spec-base-background);
+    border: 1px solid var(--yt-spec-outline);
+    border-right: none;
+    border-radius: 40px 0 0 40px;
+    padding: 0 4px 0 16px;
+    font-size: 16px;
+    color: var(--yt-spec-text-primary);
+    outline: none;
+}
+
+.search-input:focus {
+    border-color: #1c62b9;
+}
+
+.search-button {
+    width: 64px;
+    border: 1px solid var(--yt-spec-outline);
+    background-color: var(--yt-spec-menu-background);
+    border-radius: 0 40px 40px 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.search-button:hover {
+    background-color: #303030;
+}
+
+.search-button svg {
+    width: 24px;
+    height: 24px;
+    fill: var(--yt-spec-text-primary);
+}
+
+.header-end {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 0 0 auto;
+}
+
+/* ========================================
+   3. SIDEBAR
+   ======================================== */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -240px;
+    width: 240px;
+    height: 100%;
+    background-color: var(--yt-spec-base-background);
+    z-index: 2100;
+    transition: left 0.3s ease;
+    overflow-y: auto;
+}
+
+.sidebar.open {
+    left: 0;
+}
+
+.sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 2050;
+    display: none;
+}
+
+.sidebar-overlay.show {
+    display: block;
+}
+
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    height: 56px;
+    border-bottom: 1px solid var(--yt-spec-outline);
+}
+
+.sidebar-content {
+    padding: 12px 0;
+}
+
+.sidebar-section {
+    padding: 8px 0;
+}
+
+.sidebar-item {
+    display: flex;
+    align-items: center;
+    padding: 0 24px;
+    height: 40px;
+    text-decoration: none;
+    color: var(--yt-spec-text-primary);
+    transition: background-color 0.2s;
+    cursor: pointer;
+}
+
+.sidebar-item:hover {
+    background-color: var(--yt-spec-10-percent-layer);
+}
+
+.sidebar-item.active {
+    background-color: var(--yt-spec-10-percent-layer);
+}
+
+.sidebar-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 24px;
+    fill: currentColor;
+}
+
+.sidebar-divider {
+    height: 1px;
+    background-color: var(--yt-spec-outline);
+    margin: 12px 0;
+}
+
+/* ========================================
+   4. FOOTER
+   ======================================== */
+.footer {
+    background-color: var(--yt-spec-raised-background);
+    padding: 48px 0 24px;
+    margin-top: 80px;
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 48px;
+    margin-bottom: 48px;
+}
+
+.footer-section h4 {
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 16px;
+}
+
+.footer-section p {
+    color: var(--yt-spec-text-secondary);
+    margin-bottom: 8px;
+}
+
+.footer-stats {
+    display: flex;
+    gap: 8px;
+    color: var(--yt-spec-text-secondary);
+    font-size: 14px;
+    margin-top: 12px;
+}
+
+.footer-bottom {
+    border-top: 1px solid var(--yt-spec-outline);
+    padding-top: 24px;
+    text-align: center;
+    color: var(--yt-spec-text-secondary);
+    font-size: 13px;
+}
+
+.update-info {
+    margin-top: 8px;
+}
+
+/* ========================================
+   5. NOTIFICATIONS
+   ======================================== */
+.notification {
+    position: fixed;
+    bottom: 24px;
+    left: 24px;
+    background-color: var(--yt-spec-raised-background);
+    border: 1px solid var(--yt-spec-outline);
+    border-radius: 8px;
+    padding: 16px 24px;
+    box-shadow: var(--yt-spec-shadow-raised);
+    transform: translateY(120%);
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    z-index: 3000;
+}
+
+.notification.show {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.notification-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.notification-icon {
+    width: 24px;
+    height: 24px;
+    fill: #4caf50;
+}
+
+.notification.error .notification-icon {
+    fill: #f44336;
+}
+
+.notification-text {
+    font-size: 14px;
+    font-weight: 500;
+}

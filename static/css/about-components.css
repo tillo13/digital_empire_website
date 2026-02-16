@@ -1,0 +1,325 @@
+/* ========================================
+   ABOUT-COMPONENTS.CSS - ABOUT PAGE SPECIFIC
+   Metrics, Performance Charts, COPPA sections
+   ======================================== */
+
+/* About Page Metrics */
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 24px;
+    margin: 32px 0;
+}
+
+.metric-card {
+    background: var(--yt-spec-menu-background);
+    padding: 32px;
+    border-radius: 12px;
+    text-align: center;
+    border: 1px solid var(--yt-spec-outline);
+    transition: transform 0.2s;
+}
+
+.metric-card:hover {
+    transform: translateY(-4px);
+}
+
+.metric-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+    display: block;
+}
+
+.metric-value {
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--yt-spec-brand-red);
+    margin-bottom: 8px;
+}
+
+.metric-label {
+    font-size: 14px;
+    color: var(--yt-spec-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.metric-description {
+    font-size: 14px;
+    color: var(--yt-spec-text-secondary);
+    margin-top: 12px;
+    line-height: 1.6;
+}
+
+/* Performance Metrics Section */
+.performance-metrics {
+    background: linear-gradient(135deg, rgba(255, 0, 0, 0.08) 0%, rgba(255, 0, 0, 0.03) 100%);
+    border: 1px solid rgba(255, 0, 0, 0.2);
+    padding: 48px;
+    border-radius: 16px;
+    margin: 40px 0;
+}
+
+.performance-metrics h3 {
+    font-size: 28px;
+    margin-bottom: 32px;
+    text-align: center;
+}
+
+.performance-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 24px;
+    margin-bottom: 32px;
+}
+
+.performance-item {
+    background: var(--yt-spec-menu-background);
+    padding: 24px;
+    border-radius: 12px;
+    text-align: center;
+    border: 1px solid var(--yt-spec-outline);
+}
+
+.performance-value {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--yt-spec-brand-red);
+    margin-bottom: 8px;
+}
+
+.performance-label {
+    font-size: 14px;
+    color: var(--yt-spec-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+}
+
+.performance-detail {
+    font-size: 12px;
+    color: var(--yt-spec-text-disabled);
+    line-height: 1.4;
+}
+
+/* Metrics Explanation */
+.metrics-explanation {
+    background: var(--yt-spec-menu-background);
+    padding: 32px;
+    border-radius: 12px;
+    margin-top: 40px;
+}
+
+.metrics-explanation h4 {
+    font-size: 20px;
+    margin-bottom: 20px;
+    color: var(--yt-spec-text-primary);
+}
+
+.metric-definition {
+    margin-bottom: 24px;
+    padding: 20px;
+    background: var(--yt-spec-raised-background);
+    border-radius: 8px;
+    border-left: 3px solid var(--yt-spec-brand-red);
+}
+
+.metric-definition h5 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--yt-spec-text-primary);
+}
+
+.metric-definition p {
+    font-size: 14px;
+    color: var(--yt-spec-text-secondary);
+    margin: 0;
+    line-height: 1.6;
+}
+
+.metric-formula {
+    font-family: monospace;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 8px 12px;
+    border-radius: 4px;
+    margin-top: 8px;
+    font-size: 13px;
+    color: var(--yt-spec-text-primary);
+    display: inline-block;
+}
+
+/* Tier Cards */
+.tier-explanation {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-top: 24px;
+}
+
+.tier-card {
+    background: var(--yt-spec-menu-background);
+    padding: 24px;
+    border-radius: 8px;
+    text-align: center;
+    border: 2px solid transparent;
+}
+
+.tier-card.gold {
+    border-color: #ffd700;
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, transparent 100%);
+}
+
+.tier-card.silver {
+    border-color: #c0c0c0;
+    background: linear-gradient(135deg, rgba(192, 192, 192, 0.1) 0%, transparent 100%);
+}
+
+.tier-card.bronze {
+    border-color: #cd7f32;
+    background: linear-gradient(135deg, rgba(205, 127, 50, 0.1) 0%, transparent 100%);
+}
+
+.tier-icon {
+    font-size: 48px;
+    margin-bottom: 12px;
+}
+
+.tier-name {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.tier-criteria {
+    font-size: 14px;
+    color: var(--yt-spec-text-secondary);
+    line-height: 1.6;
+}
+
+/* Content Standards Section */
+.coppa-section {
+    background: linear-gradient(135deg, rgba(76, 175, 80, 0.1) 0%, rgba(76, 175, 80, 0.05) 100%);
+    border: 1px solid rgba(76, 175, 80, 0.3);
+    padding: 32px;
+    border-radius: 12px;
+    margin: 32px 0;
+}
+
+.coppa-section h3 {
+    color: #4caf50;
+    margin-top: 0;
+}
+
+.coppa-list {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+}
+
+.coppa-list li {
+    position: relative;
+    padding-left: 32px;
+    margin-bottom: 16px;
+    color: var(--yt-spec-text-secondary);
+    line-height: 1.6;
+}
+
+.coppa-list li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: #4caf50;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+/* Audience Section */
+.audience-section {
+    background: linear-gradient(135deg, rgba(255, 0, 0, 0.05) 0%, rgba(255, 0, 0, 0.02) 100%);
+    border: 1px solid rgba(255, 0, 0, 0.2);
+    padding: 32px;
+    border-radius: 12px;
+    margin: 32px 0;
+}
+
+.audience-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 24px;
+    margin-top: 24px;
+}
+
+.audience-stat {
+    text-align: center;
+}
+
+.audience-number {
+    display: block;
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--yt-spec-brand-red);
+    margin-bottom: 8px;
+}
+
+.audience-label {
+    font-size: 14px;
+    color: var(--yt-spec-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Value Props */
+.value-props {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+    margin-top: 32px;
+}
+
+.value-card {
+    background: var(--yt-spec-menu-background);
+    padding: 32px;
+    border-radius: 12px;
+    border: 1px solid var(--yt-spec-outline);
+    transition: all 0.3s ease;
+}
+
+.value-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--yt-spec-brand-red);
+}
+
+.value-icon {
+    font-size: 36px;
+    margin-bottom: 16px;
+    display: block;
+}
+
+.value-card h4 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+/* Channel Strategy */
+.channel-strategy {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 24px;
+}
+
+.strategy-item {
+    background: var(--yt-spec-menu-background);
+    padding: 24px;
+    border-radius: 8px;
+    border: 1px solid var(--yt-spec-outline);
+}
+
+.strategy-item h5 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: var(--yt-spec-text-primary);
+}

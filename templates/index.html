@@ -1,0 +1,416 @@
+{% extends "base.html" %}
+
+{% block title %}Digital Empire Network - Premium YouTube Gaming Network{% endblock %}
+
+{% block content %}
+<!-- Hero Section with Better Metrics Display -->
+<section class="hero-section">
+    <div class="hero-background"></div>
+    <div class="hero-content">
+        <h1 class="hero-title">
+            <span class="hero-title-main">Digital Empire Network</span>
+            <span class="hero-title-sub">The Premier YouTube Gaming Network for Brand Partnerships</span>
+        </h1>
+
+        <!-- Primary Network Stats (Real Data) -->
+        <div class="network-power-stats">
+            <div class="power-stat">
+                <div class="power-icon">📺</div>
+                <div class="power-number">{{ data.totals.views_formatted }}</div>
+                <div class="power-label">Total Network Views</div>
+                <div class="power-context">Since 2011 - {{ data.totals.years_active }} years of content</div>
+            </div>
+            <div class="power-stat">
+                <div class="power-icon">👥</div>
+                <div class="power-number">{{ data.totals.active_community_formatted }}</div>
+                <div class="power-label">Active Community</div>
+                <div class="power-context">Total engagements across network</div>
+            </div>
+            <div class="power-stat">
+                <div class="power-icon">🎯</div>
+                <div class="power-number">{{
+                    data.totals.actual_weekly_views_formatted|default(data.totals.weekly_reach_formatted) }}</div>
+                <div class="power-label">Weekly Views</div>
+                <div class="power-context">Average weekly reach</div>
+            </div>
+            <div class="power-stat">
+                <div class="power-icon">📺</div>
+                <div class="power-number">{{ data.totals.subscribers_formatted }}</div>
+                <div class="power-label">Total Subscribers</div>
+                <div class="power-context">Across {{ data.totals.channels }} gaming channels</div>
+            </div>
+        </div>
+
+        <!-- Secondary Performance Metrics (Real Data) -->
+        <div class="performance-bar">
+            <div class="performance-item">
+                <span class="perf-label">Content Library</span>
+                <span class="perf-value">{{ data.totals.videos_formatted }} Videos</span>
+            </div>
+            <div class="performance-item">
+                <span class="perf-label">Avg Views/Video</span>
+                <span class="perf-value">{{ data.totals.avg_views_per_video_formatted }}</span>
+            </div>
+            <div class="performance-item">
+                <span class="perf-label">Viral Videos (10K+)</span>
+                <span class="perf-value">{{ data.totals.viral_videos|default('0') }}</span>
+            </div>
+            <div class="performance-item">
+                <span class="perf-label">Network Age</span>
+                <span class="perf-value">{{ data.totals.years_active }} Years</span>
+            </div>
+            <div class="performance-item">
+                <span class="perf-label">Upload Rate</span>
+                <span class="perf-value">{{ data.totals.uploads_per_month|round(1) }}/month</span>
+            </div>
+        </div>
+
+        <div class="hero-cta">
+            <button class="primary-cta-button" onclick="scrollToPartnership()">
+                Start Your Campaign Today
+            </button>
+            <p class="cta-subtext">
+                Join brands reaching gaming audiences worldwide •
+                <a href="/media_kit"
+                    style="color: var(--yt-spec-call-to-action); text-decoration: underline; font-weight: 500;">View our
+                    complete media kit</a>
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- Main Content -->
+<main class="main-content">
+    <!-- Network Channel Portfolio -->
+    <section class="network-section">
+        <div class="section-header">
+            <h2 class="section-title">Our Gaming Channel Portfolio</h2>
+            <div class="sort-info">
+                Specializing in Roblox Gaming & Creative Content •
+                <a href="/media_kit" style="color: var(--yt-spec-call-to-action); text-decoration: underline;">Detailed
+                    stats in our media kit</a>
+            </div>
+        </div>
+
+        <div class="channels-grid">
+            {% for channel in data.channels %}
+            <article class="channel-card" data-channel-name="{{ channel.display_name }}">
+                <div class="channel-header" {% if channel.banner
+                    %}style="background-image: linear-gradient(to bottom, transparent, rgba(0,0,0,0.8)), url('{{ channel.banner }}')"
+                    {% endif %}>
+                    <div class="channel-badge">{{ loop.index }}</div>
+                </div>
+
+                <div class="channel-body">
+                    <div class="channel-identity">
+                        <img src="{{ channel.thumbnail }}" alt="{{ channel.title }}" class="channel-avatar">
+                        <div class="channel-info">
+                            <h3 class="channel-title">{{ channel.title }}</h3>
+                            <p class="channel-handle">{{ channel.handle }}</p>
+                            <!-- Brief channel description -->
+                            <p class="channel-description">
+                                {% if 'Dexter Playz' in channel.title %}
+                                Gobby, Bob and crew leading the way!
+                                {% elif 'Red Ninja' in channel.title and channel.subscriber_count > 500000 %}
+                                Watch RedNinja & cast of Sonic Universe!
+                                {% elif 'Sonic & Amy' in channel.title %}
+                                Sonic and Amy having amazing adventures!
+                                {% elif 'Durple and Simon' in channel.title %}
+                                Dynamic duo bringing hilarious adventures
+                                {% elif 'Fast Friends' in channel.title %}
+                                Sonic and Shadow reacting to great content!
+                                {% elif 'Dexter Also' in channel.title %}
+                                Experimental content exploring new gaming trends
+                                {% else %}
+                                Innovative gaming content creator
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="channel-metrics">
+                        <div class="metric">
+                            <div class="metric-value">{{ channel.view_count_formatted }}</div>
+                            <div class="metric-label">Views</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">{{ channel.subscriber_count_formatted }}</div>
+                            <div class="metric-label">Subscribers</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">{{ channel.video_count_formatted }}</div>
+                            <div class="metric-label">Videos</div>
+                        </div>
+                    </div>
+
+
+                    <!-- Enhanced Performance Metrics (Real Data) -->
+                    <div class="channel-performance">
+                        <div class="performance-row">
+                            <div class="perf-item">
+                                <span class="perf-icon">💬</span>
+                                <span class="perf-label">Comments:</span>
+                                <span class="perf-value">{{ channel.total_comments_formatted }}</span>
+                            </div>
+                            <div class="perf-item">
+                                <span class="perf-icon">❤️</span>
+                                <span class="perf-label">Likes:</span>
+                                <span class="perf-value">{{ channel.total_likes_formatted }}</span>
+                            </div>
+                        </div>
+                        <div class="performance-row">
+                            <div class="perf-item">
+                                <span class="perf-icon">📊</span>
+                                <span class="perf-label">Avg Views:</span>
+                                <span class="perf-value">{{ channel.avg_views_per_video_formatted }}</span>
+                            </div>
+                            <div class="perf-item">
+                                <span class="perf-icon">🚀</span>
+                                <span class="perf-label">Monthly Reach:</span>
+                                <span class="perf-value">{{ channel.monthly_reach_formatted }}</span>
+                            </div>
+                        </div>
+                        <div class="performance-row">
+                            <div class="perf-item">
+                                <span class="perf-icon">🔥</span>
+                                <span class="perf-label">Viral Videos:</span>
+                                <span class="perf-value">{{ channel.viral_videos }}</span>
+                            </div>
+                            <div class="perf-item">
+                                <span class="perf-icon">📈</span>
+                                <span class="perf-label">Viral Rate:</span>
+                                <span class="perf-value">{{ channel.viral_rate }}%</span>
+                            </div>
+                        </div>
+                        <!-- New Performance Tier Line -->
+                        <div class="performance-tier-line">
+                            <span class="tier-label">Performance:</span>
+                            <span class="tier-value {{ channel.performance_tier|lower }}">{{ channel.performance_tier
+                                }}</span>
+                        </div>
+                    </div>
+                    <div class="channel-actions">
+                        <a href="{{ channel.url }}" target="_blank" class="channel-link">
+                            <span>View Channel</span>
+                            <svg viewBox="0 0 24 24" width="16" height="16">
+                                <path d="M9 5v2h6.59L4 18.59 5.41 20 17 8.41V15h2V5H9z"></path>
+                            </svg>
+                        </a>
+                    </div>
+
+                    {% if channel.top_videos %}
+                    <div class="channel-showcase">
+                        <h4 class="showcase-title">Top Performing Content</h4>
+                        <div class="videos-showcase">
+                            {% for video in channel.top_videos[:3] %}
+                            <a href="{{ video.url }}" target="_blank" class="video-tile">
+                                <div class="video-thumb">
+                                    <img src="{{ video.thumbnail }}" alt="{{ video.title }}">
+                                    <span class="video-views">{{ video.views_formatted }} views</span>
+                                </div>
+                                <h5 class="video-title">{{ video.title[:40] }}{% if video.title|length > 40 %}...{%
+                                    endif %}</h5>
+                            </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- Enhanced Partnership Section with 6 boxes -->
+    <section id="partnership" class="partnership-section">
+        <div class="partnership-container">
+            <div class="partnership-header">
+                <h2 class="partnership-title">Why Partner With Digital Empire Network?</h2>
+                <p class="partnership-subtitle">
+                    Unlock unparalleled access to engaged gaming audiences •
+                    <a href="/media_kit"
+                        style="color: var(--yt-spec-call-to-action); text-decoration: underline; font-weight: 500;">View
+                        complete partnership details</a>
+                </p>
+            </div>
+
+            <div class="partnership-benefits">
+                <!-- Row 1 -->
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <svg viewBox="0 0 24 24" width="48" height="48">
+                            <path
+                                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3>Proven Track Record</h3>
+                    <div class="benefit-stats">
+                        <span class="benefit-number">{{ data.totals.years_active }}</span>
+                        <span class="benefit-metric">Years Active</span>
+                    </div>
+                    <p>Established in 2011, we've built lasting relationships with audiences and understand what
+                        resonates with young gamers.</p>
+                </div>
+
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <svg viewBox="0 0 24 24" width="48" height="48">
+                            <path
+                                d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3>Consistent Content Calendar</h3>
+                    <div class="benefit-stats">
+                        <span class="benefit-number">Daily</span>
+                        <span class="benefit-metric">Upload Schedule</span>
+                    </div>
+                    <p>Fresh Roblox gaming content uploaded daily across our network ensures your brand stays visible
+                        with consistent touchpoints.</p>
+                </div>
+
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <svg viewBox="0 0 24 24" width="48" height="48">
+                            <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"></path>
+                        </svg>
+                    </div>
+                    <h3>100% Brand Safe</h3>
+                    <div class="benefit-stats">
+                        <span class="benefit-number">Premium</span>
+                        <span class="benefit-metric">Content Standards</span>
+                    </div>
+                    <p>All content is family-friendly and manually reviewed. Partner with confidence knowing your brand
+                        appears alongside quality gaming content.</p>
+                </div>
+
+                <!-- Row 2 -->
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <svg viewBox="0 0 24 24" width="48" height="48">
+                            <path
+                                d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3>Multi-Channel Amplification</h3>
+                    <div class="benefit-stats">
+                        <span class="benefit-number">7</span>
+                        <span class="benefit-metric">Synchronized Channels</span>
+                    </div>
+                    <p>Maximize campaign impact with coordinated messaging across our entire network, reaching engaged
+                        viewers from multiple trusted channels.</p>
+                </div>
+
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <svg viewBox="0 0 24 24" width="48" height="48">
+                            <path
+                                d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3>Real Performance Metrics</h3>
+                    <div class="benefit-stats">
+                        <span class="benefit-number">{{ data.totals.avg_views_per_video_formatted }}</span>
+                        <span class="benefit-metric">Avg Views/Video</span>
+                    </div>
+                    <p>With {{ data.totals.viral_videos }} viral videos (10K+ views) and consistent performance, we
+                        deliver predictable campaign results.</p>
+                </div>
+
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <svg viewBox="0 0 24 24" width="48" height="48">
+                            <path
+                                d="M21.41 11.58l-9-9C12.05 2.22 11.55 2 11 2H4c-1.1 0-2 .9-2 2v7c0 .55.22 1.05.59 1.42l9 9c.36.36.86.58 1.41.58.55 0 1.05-.22 1.41-.59l7-7c.37-.36.59-.86.59-1.42 0-.55-.23-1.06-.59-1.42zM5.5 7C4.67 7 4 6.33 4 5.5S4.67 4 5.5 4 7 4.67 7 5.5 6.33 7 5.5 7z">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3>Premium Ad Inventory</h3>
+                    <div class="benefit-stats">
+                        <span class="benefit-number">1,000+</span>
+                        <span class="benefit-metric">Videos Available</span>
+                    </div>
+                    <p>Flexible integration options from pre-roll sponsorships to custom branded content series tailored
+                        to your campaign goals.</p>
+                </div>
+            </div>
+
+            <!-- Campaign Options -->
+            <div class="campaign-options">
+                <h3>Campaign Formats We Offer</h3>
+                <div class="campaign-grid">
+                    <div class="campaign-type">
+                        <h4>🎬 Video Integrations & Branded Content</h4>
+                        <p>Natural product placements and custom branded series featuring your products within our
+                            gaming content</p>
+                    </div>
+                    <div class="campaign-type">
+                        <h4>📢 Network-Wide Campaigns</h4>
+                        <p>Synchronized messaging across all 7 channels for maximum impact and repeated brand exposure
+                        </p>
+                    </div>
+                    <div class="campaign-type">
+                        <h4>🏆 Sponsored Tournaments & Events</h4>
+                        <p>Branded gaming competitions, challenges, and special events that drive engagement and
+                            excitement</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CTA Section -->
+            <div class="partnership-cta">
+                <h3>Ready to Reach Gaming Audiences?</h3>
+                <p>Join leading brands already connecting with engaged viewers through Digital Empire Network</p>
+                <div class="brand-categories">
+                    <span class="brand-tag">🎮 Gaming Hardware</span>
+                    <span class="brand-tag">🍕 Food & Snacks</span>
+                    <span class="brand-tag">🎒 School Supplies</span>
+                    <span class="brand-tag">🧸 Toys & Games</span>
+                    <span class="brand-tag">👕 Youth Apparel</span>
+                    <span class="brand-tag">📱 Family Tech</span>
+                    <span class="brand-tag">🎬 Entertainment</span>
+                    <span class="brand-tag">⚽ Sports & Recreation</span>
+                </div>
+                <div class="cta-buttons">
+                    <button class="cta-primary" onclick="window.location.href='/contact'">Get Campaign Proposal</button>
+                    <button class="cta-secondary" onclick="window.location.href='/media_kit'">View Media Kit</button>
+                </div>
+            </div>
+
+
+            <!-- Network Growth Section -->
+            <div class="network-growth-section"
+                style="background: #1a1a1a; padding: 60px 0; margin-top: 80px; border-top: 1px solid rgba(255,255,255,0.1);">
+                <div class="container" style="max-width: 800px; margin: 0 auto; text-align: center; padding: 0 20px;">
+                    <h3 style="font-size: 1.8rem; margin-bottom: 20px; color: #fff; font-weight: 600;">Growing the
+                        Digital Empire</h3>
+                    <p style="color: #aaa; line-height: 1.7; margin-bottom: 30px; font-size: 1.1rem;">
+                        We're always looking to expand our network with quality gaming content creators.
+                        If you own gaming-focused domains or YouTube channels that align with our family-friendly
+                        standards,
+                        we'd love to explore acquisition opportunities that could enhance our collective offering.
+                    </p>
+                    <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+                        <a href="/contact" class="cta-secondary"
+                            style="display: inline-block; padding: 14px 40px; background: #212121; border: 2px solid #ff0000; color: #ff0000; text-decoration: none; border-radius: 24px; font-weight: 600; transition: all 0.3s ease; font-size: 1rem; cursor: pointer;"
+                            onmouseover="this.style.backgroundColor='#282828'"
+                            onmouseout="this.style.backgroundColor='#212121'">
+                            Discuss Acquisition Opportunities
+                        </a>
+                        <a href="/media_kit" class="cta-secondary"
+                            style="display: inline-block; padding: 14px 40px; background: #212121; border: 2px solid #3ea6ff; color: #3ea6ff; text-decoration: none; border-radius: 24px; font-weight: 600; transition: all 0.3s ease; font-size: 1rem; cursor: pointer;"
+                            onmouseover="this.style.backgroundColor='#282828'"
+                            onmouseout="this.style.backgroundColor='#212121'">
+                            📊 View Our Complete Media Kit
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+</main>
+{% endblock %}

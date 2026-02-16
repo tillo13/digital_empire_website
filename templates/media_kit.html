@@ -1,0 +1,241 @@
+{% extends "base.html" %}
+
+{% block title %}Media Kit - Digital Empire Network{% endblock %}
+
+{% block header_buttons %}{% endblock %}
+
+{% block content %}
+<!-- Media Kit Hero Section -->
+<section class="hero-section">
+    <div class="hero-background"></div>
+    <div class="hero-content">
+        <h1 class="hero-title">
+            <span class="hero-title-main">Digital Empire Network</span>
+            <span class="hero-title-sub">Official Media Kit & Partnership Guide</span>
+        </h1>
+
+        <!-- Key Stats -->
+        <div class="network-power-stats">
+            <div class="power-stat">
+                <div class="power-icon">📺</div>
+                <div class="power-number">{{ data.totals.views_formatted }}</div>
+                <div class="power-label">Total Views</div>
+                <div class="power-context">Since 2011</div>
+            </div>
+            <div class="power-stat">
+                <div class="power-icon">🎯</div>
+                <div class="power-number">{{ data.totals.actual_weekly_views_formatted or '520K' }}</div>
+                <div class="power-label">Weekly Views</div>
+                <div class="power-context">Current reach</div>
+            </div>
+            <div class="power-stat">
+                <div class="power-icon">👥</div>
+                <div class="power-number">{{ data.totals.subscribers_formatted }}</div>
+                <div class="power-label">Subscribers</div>
+                <div class="power-context">{{ data.totals.channels }} channels</div>
+            </div>
+            <div class="power-stat">
+                <div class="power-icon">🛡️</div>
+                <div class="power-number">100%</div>
+                <div class="power-label">Brand Safe</div>
+                <div class="power-context">Family-friendly</div>
+            </div>
+        </div>
+
+        <!-- Download & Contact Actions -->
+        <div
+            style="background: rgba(255, 193, 7, 0.1); border: 1px solid rgba(255, 193, 7, 0.3); border-radius: 12px; padding: 32px; margin: 40px auto; max-width: 800px;">
+            <h3 style="color: #ffc107; margin: 0 0 20px 0; text-align: center; font-size: 24px;">
+                📋 Partnership Resources
+            </h3>
+            <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px;">
+                <a href="{{ url_for('static', filename='files/redninja_mediakit_2025aug.pdf') }}"
+                    download="Digital_Empire_Network_Media_Kit_2025.pdf"
+                    style="background: #ffc107; color: black; padding: 16px 32px; border-radius: 8px; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 10px; font-size: 16px; transition: all 0.2s ease;"
+                    onmouseover="this.style.transform='translateY(-2px)'"
+                    onmouseout="this.style.transform='translateY(0)'">
+                    <span style="font-size: 20px;">📄</span>
+                    Download Complete Media Kit PDF
+                </a>
+                <a href="/contact"
+                    style="background: transparent; color: #ffc107; border: 2px solid #ffc107; padding: 14px 32px; border-radius: 8px; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 10px; font-size: 16px; transition: all 0.2s ease;"
+                    onmouseover="this.style.backgroundColor='rgba(255, 193, 7, 0.1)'"
+                    onmouseout="this.style.backgroundColor='transparent'">
+                    <span style="font-size: 20px;">💬</span>
+                    Contact for Partnership
+                </a>
+            </div>
+            <p style="text-align: center; margin: 0; color: var(--yt-spec-text-secondary);">
+                <strong>Data as of August 2025.</strong> Contact us for current metrics and custom campaign pricing.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- Main Content -->
+<main class="main-content">
+    <!-- What's in the Media Kit -->
+    <section class="partnership-section">
+        <div class="partnership-container">
+            <div class="partnership-header">
+                <h2 class="partnership-title">📊 What's in Our Media Kit</h2>
+                <p class="partnership-subtitle">Everything you need to evaluate Digital Empire Network as a partner</p>
+            </div>
+
+            <div class="partnership-benefits">
+                <div class="benefit-card">
+                    <div class="benefit-icon">📈</div>
+                    <h3>Channel Performance Data</h3>
+                    <p>Detailed metrics for all 7 channels including subscriber counts, view statistics, engagement
+                        rates, and growth trends.</p>
+                </div>
+
+                <div class="benefit-card">
+                    <div class="benefit-icon">🎯</div>
+                    <h3>Audience Demographics</h3>
+                    <p>Age ranges, geographic distribution, viewing patterns, and family engagement data for strategic
+                        targeting.</p>
+                </div>
+
+                <div class="benefit-card">
+                    <div class="benefit-icon">💰</div>
+                    <h3>Partnership Pricing</h3>
+                    <p>Investment ranges from $2K-$30K with campaign format options and ROI projections based on
+                        industry standards.</p>
+                </div>
+
+                <div class="benefit-card">
+                    <div class="benefit-icon">🔗</div>
+                    <h3>Verification Links</h3>
+                    <p>Direct links to YouTube channels and Social Blade analytics for independent verification of all
+                        metrics.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Partnership Overview -->
+    <section class="partnership-section"
+        style="background: linear-gradient(135deg, rgba(255, 0, 0, 0.05) 0%, rgba(255, 0, 0, 0.02) 100%);">
+        <div class="partnership-container">
+            <div class="partnership-header">
+                <h2 class="partnership-title">🚀 Partnership Investment Ranges</h2>
+                <p class="partnership-subtitle">Flexible options for every campaign goal and budget</p>
+            </div>
+
+            <div
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; max-width: 1000px; margin: 0 auto;">
+                <div
+                    style="background: var(--yt-spec-raised-background); padding: 24px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);">
+                    <h4 style="color: var(--yt-spec-brand-red); margin: 0 0 12px 0; font-size: 18px;">Network-Wide
+                        Campaigns</h4>
+                    <div style="font-size: 24px; font-weight: 700; margin-bottom: 8px;">$15K - $30K</div>
+                    <p style="margin: 0; font-size: 14px; color: var(--yt-spec-text-secondary);">Coordinated messaging
+                        across all 7 channels for maximum reach and brand impact.</p>
+                </div>
+
+                <div
+                    style="background: var(--yt-spec-raised-background); padding: 24px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);">
+                    <h4 style="color: var(--yt-spec-brand-red); margin: 0 0 12px 0; font-size: 18px;">Tier-Targeted
+                        Campaigns</h4>
+                    <div style="font-size: 24px; font-weight: 700; margin-bottom: 8px;">$8K - $15K</div>
+                    <p style="margin: 0; font-size: 14px; color: var(--yt-spec-text-secondary);">Focus on Gold/Silver
+                        tier channels for premium audience engagement.</p>
+                </div>
+
+                <div
+                    style="background: var(--yt-spec-raised-background); padding: 24px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);">
+                    <h4 style="color: var(--yt-spec-brand-red); margin: 0 0 12px 0; font-size: 18px;">Growth Channel
+                        Focus</h4>
+                    <div style="font-size: 24px; font-weight: 700; margin-bottom: 8px;">$2K - $4K</div>
+                    <p style="margin: 0; font-size: 14px; color: var(--yt-spec-text-secondary);">Partner with Fast
+                        Friends and emerging channels for cost-effective reach.</p>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 32px;">
+                <p style="margin-bottom: 16px; font-size: 16px;">Need custom pricing or have questions?</p>
+                <a href="/contact"
+                    style="background: var(--yt-spec-brand-red); color: white; padding: 12px 32px; border-radius: 8px; text-decoration: none; font-weight: 600;">
+                    Get Custom Campaign Quote
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us -->
+    <section class="partnership-section">
+        <div class="partnership-container">
+            <div class="partnership-header">
+                <h2 class="partnership-title">🛡️ The Family-Safe Advantage</h2>
+                <p class="partnership-subtitle">Why brands choose Digital Empire Network</p>
+            </div>
+
+            <div class="partnership-benefits">
+                <div class="benefit-card">
+                    <div class="benefit-icon">🛡️</div>
+                    <h3>Zero Brand Risk</h3>
+                    <p>100% family-friendly content eliminates PR risks and controversial associations.</p>
+                </div>
+
+                <div class="benefit-card">
+                    <div class="benefit-icon">👨‍👩‍👧‍👦</div>
+                    <h3>Parent Co-Viewing</h3>
+                    <p>Parents watch with their children, creating dual-generational brand exposure.</p>
+                </div>
+
+                <div class="benefit-card">
+                    <div class="benefit-icon">⏰</div>
+                    <h3>{{ data.totals.years_active }} Years Proven</h3>
+                    <p>Established since 2011 with consistent, reliable content and audience growth.</p>
+                </div>
+
+                <div class="benefit-card">
+                    <div class="benefit-icon">💰</div>
+                    <h3>Cost-Effective</h3>
+                    <p>20-30% below individual creator rates while delivering coordinated multi-channel reach.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- More Details -->
+    <section class="partnership-section" style="background: var(--yt-spec-menu-background);">
+        <div class="partnership-container">
+            <div style="text-align: center; max-width: 800px; margin: 0 auto;">
+                <h2 style="margin-bottom: 20px;">🔍 Want More Details?</h2>
+                <p style="margin-bottom: 32px; font-size: 18px; line-height: 1.6;">
+                    This media kit provides partnership essentials. For complete channel portfolios, individual
+                    performance metrics,
+                    audience analytics, and content samples, visit our main page.
+                </p>
+                <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+                    <a href="/"
+                        style="background: var(--yt-spec-brand-red); color: white; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 8px;">
+                        <span>🏠</span> View Full Channel Portfolio
+                    </a>
+                    <a href="/contact"
+                        style="background: transparent; color: var(--yt-spec-brand-red); border: 2px solid var(--yt-spec-brand-red); padding: 12px 28px; border-radius: 8px; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 8px;">
+                        <span>📞</span> Discuss Partnership
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Verification Footer -->
+    <div
+        style="background: var(--yt-spec-base-background); padding: 24px; border-radius: 8px; text-align: center; color: var(--yt-spec-text-secondary); font-size: 14px; margin-top: 40px; border: 1px solid rgba(255,255,255,0.1);">
+        <p style="margin: 0;">
+            <strong>📊 All metrics independently verifiable</strong> through YouTube and Social Blade analytics.
+            Data current as of August 2025. <a href="/contact"
+                style="color: var(--yt-spec-brand-red); text-decoration: underline;">Contact us</a> for the latest
+            performance reports.
+        </p>
+    </div>
+</main>
+
+{% endblock %}
+
+{% block footer_stats %}{% endblock %}
+{% block footer_extra %}{% endblock %}

@@ -1,0 +1,349 @@
+/* ========================================
+   RESPONSIVE.CSS - MEDIA QUERIES
+   All responsive design breakpoints
+   ======================================== */
+
+/* ========================================
+   1. TABLET (1200px and below)
+   ======================================== */
+@media (max-width: 1200px) {
+    .hero-title-main {
+        font-size: 48px;
+    }
+    
+    .partnership-title {
+        font-size: 36px;
+    }
+}
+
+/* ========================================
+   2. TABLET/MOBILE (768px and below)
+   ======================================== */
+@media (max-width: 768px) {
+    /* Header adjustments */
+    .header {
+        padding: 0 8px;
+    }
+    
+    .logo-container {
+        margin-left: 8px;
+        gap: 4px;
+    }
+    
+    .logo-icon svg {
+        width: 32px;
+        height: 20px;
+    }
+    
+    .logo-text {
+        display: none;
+    }
+    
+    .network-badge {
+        font-size: 9px;
+        padding: 2px 6px;
+    }
+    
+    .header-center {
+        flex: 0 1 300px;
+        margin: 0 10px;
+    }
+    
+    .search-container {
+        max-width: 280px;
+    }
+    
+    .header-pills {
+        display: none; /* Hide header pills on mobile, keep the main navigation pills */
+    }
+    
+    /* Navigation pills */
+    .keyword-pills-container {
+        padding: 8px 16px;
+    }
+    
+    .pill {
+        padding: 6px 14px;
+        font-size: 13px;
+        height: 32px;
+    }
+    
+    /* Hero adjustments */
+    .hero-section {
+        margin-top: 112px;
+        padding: 40px 0 60px;
+    }
+    
+    .hero-title-main {
+        font-size: 36px;
+        letter-spacing: -1px;
+    }
+    
+    .hero-title-sub {
+        font-size: 18px;
+    }
+    
+    .network-power-stats {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .power-number {
+        font-size: 42px;
+    }
+
+    .performance-bar {
+        gap: 24px;
+        padding: 16px;
+    }
+
+    /* Channel cards */
+    .channels-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .performance-row {
+        grid-template-columns: 1fr;
+    }
+
+    /* Partnership section */
+    .partnership-benefits {
+        grid-template-columns: 1fr;
+    }
+
+    .campaign-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    /* Footer */
+    .footer-content {
+        grid-template-columns: 1fr;
+        gap: 32px;
+    }
+    
+    /* Main content spacing */
+    .main-content {
+        padding: 32px 16px;
+    }
+    
+    /* About page */
+    .about-hero h1 {
+        font-size: 36px;
+    }
+    
+    .info-section {
+        padding: 32px 24px;
+    }
+    
+    .metrics-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    /* Contact page */
+    .contact-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .contact-hero h1 {
+        font-size: 36px;
+    }
+}
+
+/* ========================================
+   3. SMALL MOBILE (480px and below)
+   ======================================== */
+@media (max-width: 480px) {
+    /* Logo adjustments */
+    .logo-icon {
+        display: none;
+    }
+    
+    .logo-text {
+        display: block;
+        font-size: 16px;
+    }
+    
+    .header-center {
+        display: none; /* Hide search on very small screens */
+    }
+    
+    /* Navigation pills */
+    .pill {
+        padding: 6px 12px;
+        font-size: 12px;
+        height: 30px;
+    }
+    
+    /* Hero adjustments */
+    .hero-content {
+        padding: 0 16px;
+    }
+    
+    .hero-title-main {
+        font-size: 28px;
+    }
+    
+    .hero-title-sub {
+        font-size: 16px;
+    }
+    
+    .power-stat {
+        padding: 24px 16px;
+    }
+    
+    .power-number {
+        font-size: 32px;
+    }
+    
+    .power-label {
+        font-size: 16px;
+    }
+    
+    .power-context {
+        font-size: 12px;
+    }
+    
+    .performance-bar {
+        flex-direction: column;
+        gap: 16px;
+    }
+    
+    .primary-cta-button {
+        padding: 14px 32px;
+        font-size: 16px;
+    }
+    
+    /* Channel cards */
+    .channel-body {
+        padding: 16px;
+    }
+    
+    .channel-metrics {
+        gap: 8px;
+        padding: 12px;
+    }
+    
+    .metric-value {
+        font-size: 16px;
+    }
+    
+    /* Partnership section */
+    .partnership-container {
+        padding: 0 16px;
+    }
+    
+    .benefit-card {
+        padding: 24px 20px;
+    }
+    
+    .partnership-cta {
+        padding: 32px 20px;
+    }
+    
+    /* Footer */
+    .footer {
+        padding: 32px 0 20px;
+    }
+    
+    .footer-content {
+        padding: 0 16px;
+    }
+}
+
+/* ========================================
+   4. SPECIFIC COMPONENT RESPONSIVE RULES
+   ======================================== */
+
+/* About Page Specific */
+@media (max-width: 768px) {
+    .metrics-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+    
+    .performance-grid {
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    }
+    
+    .tier-explanation {
+        grid-template-columns: 1fr;
+    }
+    
+    .channel-strategy {
+        grid-template-columns: 1fr;
+    }
+    
+    .value-props {
+        grid-template-columns: 1fr;
+    }
+    
+    .audience-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .audience-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Contact Page Specific */
+@media (max-width: 768px) {
+    .contact-container {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+    
+    .contact-form-section {
+        padding: 32px 24px;
+    }
+    
+    .about-card {
+        padding: 24px;
+    }
+}
+
+/* Performance optimizations for smaller screens */
+@media (max-width: 480px) {
+    .hero-background::before {
+        animation: none; /* Disable animation on small screens for performance */
+    }
+    
+    .power-stat {
+        backdrop-filter: none; /* Remove backdrop filter on small screens */
+    }
+}
+
+/* ========================================
+   5. ANIMATIONS
+   ======================================== */
+.animated {
+    animation: fadeInUp 0.6s ease;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+    .animated,
+    .hero-background::before,
+    .power-stat,
+    .benefit-card,
+    .channel-card {
+        animation: none;
+        transition: none;
+    }
+}

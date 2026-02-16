@@ -1,0 +1,267 @@
+{% extends "base.html" %}
+
+{% block title %}About - Digital Empire Network{% endblock %}
+
+{% block header_buttons %}{% endblock %}
+
+{% block content %}
+    <!-- About Hero -->
+    <section class="about-hero">
+        <h1>About Digital Empire Network</h1>
+        <p>A proven YouTube gaming network with {{ data.totals.years_active }}+ years of content creation experience</p>
+    </section>
+
+    <!-- About Content -->
+    <div class="about-content">
+        <!-- What We Do -->
+        <section class="info-section">
+            <h2>What We Do</h2>
+            <p>Digital Empire Network is a collection of YouTube channels that specialize in family-friendly gaming content, primarily focused on Roblox gaming. Since 2011, we've been creating entertaining content while maintaining the highest standards of child safety and brand appropriateness.</p>
+            
+            <div class="highlight-box">
+                <h4>Our Mission</h4>
+                <p>To create entertaining gaming content that brings joy to viewers worldwide while providing brands with authentic opportunities to connect with engaged audiences.</p>
+            </div>
+
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <span class="metric-icon">🎮</span>
+                    <div class="metric-value">{{ data.totals.channels }}</div>
+                    <div class="metric-label">Active Channels</div>
+                    <div class="metric-description">Specialized content across different gaming interests</div>
+                </div>
+                <div class="metric-card">
+                    <span class="metric-icon">📅</span>
+                    <div class="metric-value">{{ data.totals.years_active }}</div>
+                    <div class="metric-label">Years of Experience</div>
+                    <div class="metric-description">Building trust with viewers since 2011</div>
+                </div>
+                <div class="metric-card">
+                    <span class="metric-icon">🎬</span>
+                    <div class="metric-value">{{ data.totals.videos_formatted }}</div>
+                    <div class="metric-label">Videos Created</div>
+                    <div class="metric-description">Extensive library of evergreen content</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Network Performance Metrics -->
+        <section class="info-section">
+            <h2>Understanding Our Network Metrics</h2>
+            
+            <div class="performance-metrics">
+                <h3>Key Performance Indicators</h3>
+                <div class="performance-grid">
+                    <div class="performance-item">
+                        <div class="performance-value">{{ data.totals.views_formatted }}</div>
+                        <div class="performance-label">Total Network Views</div>
+                        <div class="performance-detail">Cumulative views since 2011 across all channels</div>
+                    </div>
+                    <div class="performance-item">
+                        <div class="performance-value">{{ data.totals.subscribers_formatted }}</div>
+                        <div class="performance-label">Total Subscribers</div>
+                        <div class="performance-detail">Combined subscriber base across {{ data.totals.channels }} channels</div>
+                    </div>
+                    <div class="performance-item">
+                        <div class="performance-value">{{ data.totals.active_community_formatted|default('386.8K') }}</div>
+                        <div class="performance-label">Active Community</div>
+                        <div class="performance-detail">Total likes and comments from engaged viewers</div>
+                    </div>
+                    <div class="performance-item">
+                        <div class="performance-value">{{ data.totals.actual_monthly_views_formatted }}</div>
+                        <div class="performance-label">Monthly Views</div>
+                        <div class="performance-detail">Average views generated each month</div>
+                    </div>
+                    <div class="performance-item">
+                        <div class="performance-value">{{ data.totals.avg_views_per_video_formatted }}</div>
+                        <div class="performance-label">Avg Views/Video</div>
+                        <div class="performance-detail">Consistent reach for every upload</div>
+                    </div>
+                    <div class="performance-item">
+                        <div class="performance-value">{{ data.totals.viral_videos }}</div>
+                        <div class="performance-label">Popular Videos</div>
+                        <div class="performance-detail">Videos achieving 10K+ views</div>
+                    </div>
+                </div>
+                
+                <div class="highlight-box">
+                    <h4>What These Metrics Mean for Brands</h4>
+                    <p>Our {{ data.totals.actual_monthly_views_formatted }} monthly views represent consistent, predictable reach for your campaigns. With {{ data.totals.active_community_formatted|default('386.8K') }} total engagements (comments + likes), we've proven our audience doesn't just watch—they actively participate and engage with content.</p>
+                </div>
+            </div>
+
+            <!-- Detailed Metrics Explanation -->
+            <div class="metrics-explanation">
+                <h4>Our Metrics Explained</h4>
+                
+                <div class="metric-definition">
+                    <h5>📺 Total Network Views ({{ data.totals.views_formatted }})</h5>
+                    <p>This represents every single view across all our channels since 2011. It's the cumulative proof of our content's reach and staying power. Unlike many networks, our older videos continue generating views years after publication.</p>
+                </div>
+
+                <div class="metric-definition">
+                    <h5>👥 Active Community ({{ data.totals.active_community_formatted|default('386.8K') }})</h5>
+                    <p>Our active community metric combines all likes ({{ data.totals.total_likes_formatted }}) and comments ({{ data.totals.total_comments_formatted }}) across our network. This shows real viewer engagement—people who care enough to interact with our content. For advertisers, this means your brand appears in content that viewers actively engage with, not passively consume.</p>
+                </div>
+
+                <div class="metric-definition">
+                    <h5>🎯 Monthly Views ({{ data.totals.actual_monthly_views_formatted }})</h5>
+                    <p>Calculated by dividing our total views by months active, this shows the average monthly reach your brand can expect. This isn't a projection—it's based on {{ data.totals.years_active }} years of actual performance data.</p>
+                </div>
+
+                <div class="metric-definition">
+                    <h5>📊 Average Views Per Video ({{ data.totals.avg_views_per_video_formatted }})</h5>
+                    <p>With {{ data.totals.videos_formatted }} videos created, we average {{ data.totals.avg_views_per_video_formatted }} views per video. This consistency means whether your brand appears in our newest upload or integrates across multiple videos, you can expect reliable reach.</p>
+                </div>
+
+                <div class="metric-definition">
+                    <h5>🔥 Popular Videos ({{ data.totals.viral_videos }} videos with 10K+ views)</h5>
+                    <p>We define "popular" as videos reaching 10,000+ views. With {{ data.totals.viral_videos }} videos hitting this threshold, we've proven our ability to create content that resonates. Additionally, {{ data.totals.million_view_videos }} videos have exceeded 1 million views.</p>
+                </div>
+
+                <div class="metric-definition">
+                    <h5>📈 Upload Consistency ({{ "%.1f"|format(data.totals.uploads_per_month) }} videos/month)</h5>
+                    <p>We maintain a steady content schedule, uploading an average of {{ "%.1f"|format(data.totals.uploads_per_month) }} videos per month across our network. This consistent publishing schedule ensures your brand stays visible with fresh content regularly.</p>
+                </div>
+
+                <div class="metric-definition">
+                    <h5>💬 Engagement Rate ({{ "%.2f"|format(data.totals.average_engagement) }}%)</h5>
+                    <p>Our network maintains a {{ "%.2f"|format(data.totals.average_engagement) }}% engagement rate, meaning nearly 3 out of every 100 views result in a like or comment. This is significantly above the YouTube average of 1-2%, demonstrating our audience's active participation.</p>
+                </div>
+
+                <div class="metric-definition">
+                    <h5>🏆 Channel Performance Tiers</h5>
+                    <p>We transparently categorize our channels based on their performance metrics:</p>
+                    <div class="tier-explanation">
+                        <div class="tier-card gold">
+                            <div class="tier-icon">🏆</div>
+                            <div class="tier-name">Gold Tier</div>
+                            <div class="tier-criteria">1M+ subscribers, 100K+ avg views</div>
+                        </div>
+                        <div class="tier-card silver">
+                            <div class="tier-icon">🥈</div>
+                            <div class="tier-name">Silver Tier</div>
+                            <div class="tier-criteria">100K+ subscribers, strong engagement</div>
+                        </div>
+                        <div class="tier-card bronze">
+                            <div class="tier-icon">🥉</div>
+                            <div class="tier-name">Bronze Tier</div>
+                            <div class="tier-criteria">Growing channels with niche audiences</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="metric-definition">
+                    <h5>✅ Family-Friendly Content (100%)</h5>
+                    <p>Every single video across our network is appropriate for all audiences. This isn't just a claim—it's our foundational principle that ensures brand safety for every partnership.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- How We Calculate Success -->
+        <section class="info-section">
+            <h2>How We Measure Success</h2>
+            
+            <div class="highlight-box">
+                <h4>Transparent Metrics You Can Trust</h4>
+                <p>All our metrics come directly from YouTube Analytics API. We don't inflate numbers or use vanity metrics. What you see is exactly what YouTube reports.</p>
+            </div>
+
+            <h3>Monthly Performance Tracking</h3>
+            <ul>
+                <li><strong>Real-Time Data:</strong> Our system updates channel statistics regularly to ensure accuracy</li>
+                <li><strong>Historical Analysis:</strong> {{ data.totals.years_active }} years of data provides reliable performance baselines</li>
+                <li><strong>Transparent Reporting:</strong> Every metric can be verified through YouTube's public statistics</li>
+                <li><strong>Engagement Tracking:</strong> We monitor likes, comments, and view patterns to understand audience behavior</li>
+            </ul>
+
+            <h3>What Sets Our Metrics Apart</h3>
+            <div class="value-props">
+                <div class="value-card">
+                    <span class="value-icon">📐</span>
+                    <h4>Mathematical Accuracy</h4>
+                    <p>Every number is calculated using transparent formulas. Monthly views = Total views ÷ Months active. No projections, just math.</p>
+                </div>
+                
+                <div class="value-card">
+                    <span class="value-icon">🔍</span>
+                    <h4>Verifiable Data</h4>
+                    <p>All metrics can be independently verified through YouTube. We believe in transparency and welcome scrutiny.</p>
+                </div>
+                
+                <div class="value-card">
+                    <span class="value-icon">📊</span>
+                    <h4>Meaningful Insights</h4>
+                    <p>We focus on metrics that matter for ROI: actual views, real engagement, and consistent performance.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Target Audience -->
+        <section class="info-section">
+            <h2>Who Watches Our Content</h2>
+            
+            <div class="audience-section">
+                <h3>Our Active Community Profile</h3>
+                <div class="audience-grid">
+                    <div class="audience-stat">
+                        <span class="audience-number">{{ data.totals.active_community_formatted|default('386.8K') }}</span>
+                        <span class="audience-label">Engaged Users</span>
+                    </div>
+                    <div class="audience-stat">
+                        <span class="audience-number">Roblox</span>
+                        <span class="audience-label">Primary Platform</span>
+                    </div>
+                    <div class="audience-stat">
+                        <span class="audience-number">Global</span>
+                        <span class="audience-label">Audience Reach</span>
+                    </div>
+                    <div class="audience-stat">
+                        <span class="audience-number">Daily</span>
+                        <span class="audience-label">Content Schedule</span>
+                    </div>
+                </div>
+            </div>
+
+            <h3>Audience Behavior Insights</h3>
+            <ul>
+                <li><strong>High Engagement:</strong> {{ "%.2f"|format(data.totals.average_engagement) }}% engagement rate shows viewers actively participate</li>
+                <li><strong>Consistent Viewership:</strong> {{ data.totals.avg_views_per_video_formatted }} average views per video indicates loyal viewing habits</li>
+                <li><strong>Community Participation:</strong> {{ data.totals.total_comments_formatted }} comments show viewers share opinions and connect</li>
+                <li><strong>Content Appreciation:</strong> {{ data.totals.total_likes_formatted }} likes demonstrate positive reception</li>
+                <li><strong>Long-Term Value:</strong> Videos continue generating views years after publication</li>
+            </ul>
+        </section>
+
+        <!-- Partnership Value -->
+        <section class="info-section">
+            <h2>The Partnership Opportunity</h2>
+            
+            <h3>By The Numbers</h3>
+            <div class="partnership-stats">
+                <p>When you partner with Digital Empire Network, you're accessing:</p>
+                <ul>
+                    <li>📺 <strong>{{ data.totals.actual_monthly_views_formatted }} monthly views</strong> for consistent brand exposure</li>
+                    <li>👥 <strong>{{ data.totals.active_community_formatted|default('386.8K') }} active community members</strong> who engage with content</li>
+                    <li>🎬 <strong>{{ data.totals.videos_formatted }} video library</strong> for diverse integration opportunities</li>
+                    <li>📈 <strong>{{ data.totals.avg_views_per_video_formatted }} average views per video</strong> ensuring reliable reach</li>
+                    <li>🎮 <strong>{{ data.totals.channels }} specialized channels</strong> to match your campaign goals</li>
+                    <li>✅ <strong>100% brand-safe content</strong> appropriate for all audiences</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- CTA Banner -->
+        <div class="cta-banner">
+            <h2>Ready to Reach {{ data.totals.active_community_formatted|default('386.8K') }} Engaged Viewers?</h2>
+            <p>Let's discuss how Digital Empire Network's proven metrics can drive results for your brand</p>
+            <a href="/contact" class="cta-button">View Partnership Options</a>
+        </div>
+    </div>
+{% endblock %}
+
+{% block footer_stats %}
+<p>{{ data.totals.active_community_formatted|default('386.8K') }} engaged community members and growing</p>
+{% endblock %}
+
+{% block footer_extra %}{% endblock %}

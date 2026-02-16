@@ -1,0 +1,27 @@
+{
+  "last_updated": "2024-01-01T12:00:00Z",
+  "channels": [
+    {
+      "name": "Example Channel 1",
+      "handle": "@examplechannel1",
+      "subscribers": "1.2M",
+      "total_views": "50.5M",
+      "video_count": 250,
+      "monthly_views": "500K"
+    },
+    {
+      "name": "Example Channel 2",
+      "handle": "@examplechannel2",
+      "subscribers": "800K",
+      "total_views": "25.3M",
+      "video_count": 180,
+      "monthly_views": "300K"
+    }
+  ],
+  "network_stats": {
+    "total_subscribers": "2.0M",
+    "total_views": "75.8M",
+    "total_videos": 430,
+    "monthly_reach": "800K"
+  }
+}

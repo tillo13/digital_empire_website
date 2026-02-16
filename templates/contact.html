@@ -1,0 +1,268 @@
+{% extends "base.html" %}
+
+{% block title %}Contact Us - Digital Empire Network{% endblock %}
+
+{% block header_buttons %}{% endblock %}
+
+{% block content %}
+<!-- Contact Hero -->
+<section class="contact-hero">
+    <h1>Let's Create Something Amazing Together</h1>
+    <p>Connect with Digital Empire Network for partnership/acquisition opportunities, media inquiries or general
+        questions!</p>
+</section>
+
+<!-- Contact Content -->
+<div class="contact-container">
+    <!-- Contact Form -->
+    <div class="contact-form-section">
+        <h2>Send Us a Message</h2>
+
+        <!-- Partnership Pricing Callout -->
+        <div
+            style="background: linear-gradient(135deg, rgba(255, 0, 0, 0.1) 0%, rgba(255, 0, 0, 0.05) 100%); border: 1px solid rgba(255, 0, 0, 0.3); border-radius: 12px; padding: 20px; margin-bottom: 30px;">
+            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                <span style="font-size: 24px;">💰</span>
+                <h3 style="margin: 0; color: var(--yt-spec-text-primary); font-size: 18px;">Partnership Pricing &
+                    Campaign Details</h3>
+            </div>
+            <p style="margin: 0; color: var(--yt-spec-text-secondary); line-height: 1.6;">
+                Looking for partnership pricing or campaign options? Check our
+                <a href="/media_kit"
+                    style="color: var(--yt-spec-brand-red); text-decoration: underline; font-weight: 600;">complete
+                    media kit</a>
+                for detailed pricing ranges ($2K-$30K), audience demographics, and campaign formats. Then contact us to
+                discuss your specific needs!
+            </p>
+        </div>
+
+        <form id="contactForm">
+            <div class="form-group">
+                <label for="name">Your Name</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="company">Company Name</label>
+                <input type="text" id="company" name="company">
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="subject">Subject</label>
+                <input type="text" id="subject" name="subject" required>
+            </div>
+
+            <div class="form-group">
+                <label for="message">Message</label>
+                <textarea id="message" name="message" required placeholder="Tell us about your project or inquiry...
+
+For partnership inquiries, please include:
+• Campaign objectives & target audience
+• Preferred campaign format (see our media kit)
+• Budget range or specific channels of interest
+• Timeline for campaign launch
+
+For acquisition inquiries, please include:
+• Domain/channel details and current metrics
+• Content focus and audience demographics
+• Asking price or valuation expectations"></textarea>
+            </div>
+
+            <button type="submit" class="submit-button">Send Message</button>
+
+            <div id="formMessage" class="form-message"></div>
+        </form>
+    </div>
+
+    <!-- About Section -->
+    <div class="about-section">
+        <div class="about-card">
+            <h3>About Digital Empire Network</h3>
+            <p>Since 2011, we've been creating engaging gaming content that resonates with audiences worldwide. Our
+                network of 7 channels specializes in Roblox gaming and creative content, reaching millions of viewers
+                monthly.</p>
+            <p>We're more than just a YouTube network – we're a trusted partner for brands looking to connect
+                authentically with gaming audiences through high-quality, entertaining content.</p>
+
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <span class="stat-number">{{ data.totals.views_formatted }}</span>
+                    <span class="stat-label">Total Views</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">{{ data.totals.subscribers_formatted }}</span>
+                    <span class="stat-label">Subscribers</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">100%</span>
+                    <span class="stat-label">Brand Safe</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">{{ data.totals.years_active }}</span>
+                    <span class="stat-label">Years Active</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="about-card">
+            <h3>Partnership Information</h3>
+            <p style="margin-bottom: 20px;">Interested in reaching our engaged gaming audience? We offer flexible
+                partnership options designed to deliver authentic brand connections.</p>
+
+            <div
+                style="background: var(--yt-spec-base-background); padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+                <h4 style="color: var(--yt-spec-brand-red); margin: 0 0 15px 0; font-size: 16px;">📊 Campaign Investment
+                    Ranges</h4>
+                <div style="display: grid; gap: 12px; font-size: 14px;">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                        <span>Network-Wide Campaigns</span>
+                        <strong style="color: var(--yt-spec-text-primary);">$15K-$30K</strong>
+                    </div>
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                        <span>Tier-Targeted Campaigns</span>
+                        <strong style="color: var(--yt-spec-text-primary);">$8K-$15K</strong>
+                    </div>
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                        <span>Growth Channel Focus</span>
+                        <strong style="color: var(--yt-spec-text-primary);">$2K-$4K</strong>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0;">
+                        <span>Custom Multi-Format</span>
+                        <strong style="color: var(--yt-spec-text-primary);">Custom Pricing</strong>
+                    </div>
+                </div>
+            </div>
+
+            <a href="/media_kit"
+                style="display: inline-block; background: var(--yt-spec-brand-red); color: white; padding: 12px 24px; border-radius: 20px; text-decoration: none; font-weight: 600; margin-bottom: 20px; transition: background-color 0.2s;"
+                onmouseover="this.style.backgroundColor='#cc0000'" onmouseout="this.style.backgroundColor='#ff0000'">
+                📄 View Complete Media Kit
+            </a>
+
+            <p style="font-size: 14px; color: var(--yt-spec-text-secondary); font-style: italic;">
+                Our media kit includes detailed audience demographics, channel performance metrics, campaign case
+                studies, and verification links.
+            </p>
+        </div>
+
+        <div class="about-card">
+            <h3>Direct Contact</h3>
+            <div class="contact-methods">
+                <div class="contact-method">
+                    <svg class="contact-icon" viewBox="0 0 24 24">
+                        <path
+                            d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
+                    </svg>
+                    <div>
+                        <strong>Best Way to Reach Us</strong><br>
+                        <span style="color: var(--yt-spec-text-secondary);">Use the contact form on this page</span>
+                    </div>
+                </div>
+                <div class="contact-method">
+                    <svg class="contact-icon" viewBox="0 0 24 24">
+                        <path
+                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
+                    </svg>
+                    <div>
+                        <strong>Response Time</strong><br>
+                        Within 24 hours
+                    </div>
+                </div>
+                <div class="contact-method">
+                    <svg class="contact-icon" viewBox="0 0 24 24">
+                        <path
+                            d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z" />
+                    </svg>
+                    <div>
+                        <strong>Partnership Ready</strong><br>
+                        Media kit with pricing available
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block footer_stats %}{% endblock %}
+{% block footer_extra %}{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    // Contact form handling
+    document.getElementById('contactForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const submitButton = e.target.querySelector('.submit-button');
+        const formMessage = document.getElementById('formMessage');
+
+        // Disable button and show loading
+        submitButton.disabled = true;
+        submitButton.textContent = 'Sending...';
+
+        // Get form data
+        const formData = {
+            name: document.getElementById('name').value,
+            company: document.getElementById('company').value,
+            email: document.getElementById('email').value,
+            subject: document.getElementById('subject').value,
+            message: document.getElementById('message').value
+        };
+
+        try {
+            const response = await fetch('/api/contact', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData)
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                // Show success message
+                formMessage.textContent = 'Thank you! Your message has been sent. We\'ll respond within 24 hours.';
+                formMessage.className = 'form-message success';
+                formMessage.style.display = 'block';
+
+                // Reset form
+                e.target.reset();
+
+                // Also show notification
+                showNotification('Message sent successfully!', false);
+
+                // Track successful contact form submission
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'contact_form_submit', {
+                        'event_category': 'engagement',
+                        'event_label': 'partnership_inquiry',
+                        'value': 10
+                    });
+                }
+            } else {
+                throw new Error(data.message || 'Failed to send message');
+            }
+        } catch (error) {
+            // Show error message
+            formMessage.textContent = 'Sorry, there was an error sending your message. Please try again or email us directly.';
+            formMessage.className = 'form-message error';
+            formMessage.style.display = 'block';
+
+            showNotification('Failed to send message', true);
+        } finally {
+            // Re-enable button
+            submitButton.disabled = false;
+            submitButton.textContent = 'Send Message';
+        }
+    });
+</script>
+{% endblock %}

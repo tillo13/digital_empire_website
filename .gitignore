@@ -1,0 +1,55 @@
+# Environment variables
+.env
+.env.*
+
+app.yaml
+
+# Python
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+.Python
+*.so
+
+# Virtual Environment
+venv/
+env/
+ENV/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Google Cloud
+.gcloudignore
+
+# OAuth credentials and tokens (NEVER commit these)
+credentials.json
+*.pickle
+token*.pickle
+email_sheet_id.txt
+
+# Project structure files
+*_project_structure.txt
+
+# Backup files
+*copy.py
+*before*.py
+
+# Private operational code (deployment, testing, business logic)
+# Only core Flask app is public - no proprietary operational code
+_private/
+
+# Channel data (contains private business stats)
+channel_data.json
