@@ -1,0 +1,15 @@
+runtime: python312
+instance_class: F1
+
+entrypoint: gunicorn -b :$PORT main:app
+
+automatic_scaling:
+  min_instances: 0
+  max_instances: 1
+
+handlers:
+  # Handle all requests with the Flask application
+  - url: /.*
+    script: auto
+    secure: always
+    redirect_http_response_code: 301

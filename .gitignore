@@ -2,8 +2,6 @@
 .env
 .env.*
 
-app.yaml
-
 # Python
 *.pyc
 __pycache__/

@@ -4,6 +4,7 @@ Digital Empire Network - Main Application (Static Data on Startup)
 Uses static channel_data.json on startup, API refresh available when needed
 """
 
+import html as html_mod
 import os
 import json
 import datetime
@@ -411,10 +412,21 @@ def contact():
 
 @app.route('/api/contact', methods=['POST'])
 def api_contact():
-    """Handle contact form submission"""
+    """Handle contact form submission with spam protection."""
     try:
         data = request.json
-        
+
+        # Spam check 1: Honeypot field (bots fill it, humans don't see it)
+        if data.get('website', '').strip():
+            logger.warning(f"Spam blocked: honeypot filled from {request.remote_addr}")
+            return jsonify({'status': 'error', 'message': 'Invalid submission'}), 400
+
+        # Spam check 2: Time-based (form must be open for at least 3 seconds)
+        time_open = data.get('time_open', 0)
+        if time_open < 3000:
+            logger.warning(f"Spam blocked: too fast ({time_open}ms) from {request.remote_addr}")
+            return jsonify({'status': 'error', 'message': 'Please take a moment to review your message'}), 400
+
         # Validate required fields
         required_fields = ['name', 'email', 'subject', 'message']
         for field in required_fields:
@@ -423,17 +435,18 @@ def api_contact():
                     'status': 'error',
                     'message': f'Missing required field: {field}'
                 }), 400
-        
-        # Create formatted message
+
+        # Create formatted message (escape user input to prevent XSS)
+        esc = html_mod.escape
         formatted_message = f"""
         <h3>Contact Form Submission</h3>
-        <p><strong>Name:</strong> {data.get('name')}</p>
-        <p><strong>Company:</strong> {data.get('company', 'Not provided')}</p>
-        <p><strong>Email:</strong> {data.get('email')}</p>
-        <p><strong>Subject:</strong> {data.get('subject')}</p>
+        <p><strong>Name:</strong> {esc(data.get('name'))}</p>
+        <p><strong>Company:</strong> {esc(data.get('company', 'Not provided'))}</p>
+        <p><strong>Email:</strong> {esc(data.get('email'))}</p>
+        <p><strong>Subject:</strong> {esc(data.get('subject'))}</p>
         <p><strong>Message:</strong></p>
         <div style="background-color: #f4f4f4; padding: 15px; border-radius: 5px;">
-            {data.get('message').replace('\n', '<br>')}
+            {esc(data.get('message')).replace(chr(10), '<br>')}
         </div>
         """
         

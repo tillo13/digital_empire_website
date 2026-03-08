@@ -37,6 +37,11 @@
         </div>
 
         <form id="contactForm">
+            <!-- Honeypot (hidden field - bots fill it, humans don't) -->
+            <input type="text" name="website" id="honeypot" style="display:none" tabindex="-1" autocomplete="off">
+            <!-- Timestamp (track when form loaded) -->
+            <input type="hidden" id="form-loaded-at">
+
             <div class="form-group">
                 <label for="name">Your Name</label>
                 <input type="text" id="name" name="name" required>
@@ -197,12 +202,28 @@ For acquisition inquiries, please include:
 
 {% block extra_scripts %}
 <script>
+    // Record when form loaded (for spam time check)
+    document.getElementById('form-loaded-at').value = Date.now();
+
     // Contact form handling
     document.getElementById('contactForm').addEventListener('submit', async (e) => {
         e.preventDefault();
 
         const submitButton = e.target.querySelector('.submit-button');
         const formMessage = document.getElementById('formMessage');
+
+        // Client-side honeypot check
+        if (document.getElementById('honeypot').value) return;
+
+        // Client-side time check
+        const loadedAt = parseInt(document.getElementById('form-loaded-at').value);
+        const timeOpen = Date.now() - loadedAt;
+        if (timeOpen < 3000) {
+            formMessage.textContent = 'Please take a moment to review your message before sending.';
+            formMessage.className = 'form-message error';
+            formMessage.style.display = 'block';
+            return;
+        }
 
         // Disable button and show loading
         submitButton.disabled = true;
@@ -214,7 +235,9 @@ For acquisition inquiries, please include:
             company: document.getElementById('company').value,
             email: document.getElementById('email').value,
             subject: document.getElementById('subject').value,
-            message: document.getElementById('message').value
+            message: document.getElementById('message').value,
+            website: document.getElementById('honeypot').value,
+            time_open: timeOpen
         };
 
         try {
