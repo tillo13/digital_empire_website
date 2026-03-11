@@ -14,7 +14,7 @@ import logging
 import sys
 from typing import Dict, Any, Optional
 
-from flask import Flask, render_template, jsonify, request
+from flask import Flask, render_template, jsonify, request, Response
 from dotenv import load_dotenv
 
 # Add these imports at the top of main.py (if not already present)
@@ -278,6 +278,22 @@ def should_update_cache() -> bool:
 
 
 # Flask Routes
+@app.route('/sitemap.xml')
+def sitemap():
+    xml = '''<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://digitalempiretv.com/</loc><changefreq>daily</changefreq><priority>1.0</priority></url>
+  <url><loc>https://digitalempiretv.com/about</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://digitalempiretv.com/media_kit</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://digitalempiretv.com/contact</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+</urlset>'''
+    return Response(xml, mimetype='application/xml')
+
+@app.route('/robots.txt')
+def robots():
+    content = 'User-agent: *\nAllow: /\nSitemap: https://digitalempiretv.com/sitemap.xml\n'
+    return Response(content, mimetype='text/plain')
+
 @app.route('/')
 def index():
     """Main page - Always use static data, no background updates"""
