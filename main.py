@@ -441,16 +441,12 @@ def api_contact():
     try:
         data = request.json
 
-        # Spam check 1: Honeypot field (bots fill it, humans don't see it)
-        if data.get('website', '').strip():
-            logger.warning(f"Spam blocked: honeypot filled from {request.remote_addr}")
+        # Spam guard (shared across all kumori sites)
+        from utilities.spam_guard import check_spam
+        spam_reason = check_spam(data, request.remote_addr)
+        if spam_reason:
+            logger.warning(f"Spam blocked: {spam_reason} from {request.remote_addr}")
             return jsonify({'status': 'error', 'message': 'Invalid submission'}), 400
-
-        # Spam check 2: Time-based (form must be open for at least 3 seconds)
-        time_open = data.get('time_open', 0)
-        if time_open < 3000:
-            logger.warning(f"Spam blocked: too fast ({time_open}ms) from {request.remote_addr}")
-            return jsonify({'status': 'error', 'message': 'Please take a moment to review your message'}), 400
 
         # Validate required fields
         required_fields = ['name', 'email', 'subject', 'message']

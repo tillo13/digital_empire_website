@@ -1,0 +1,1631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fast Friends Analytics Dashboard - Enhanced</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #4caf50 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 24px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #4caf50 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="80" cy="40" r="3" fill="rgba(255,255,255,0.08)"/><circle cx="40" cy="80" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="90" cy="90" r="2" fill="rgba(255,255,255,0.06)"/></svg>');
+            animation: float 20s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 15px;
+            text-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 2;
+            font-weight: 700;
+        }
+        
+        .header h1::before {
+            content: "🚀";
+            margin-right: 15px;
+            font-size: 0.8em;
+        }
+        
+        .header .subtitle {
+            font-size: 1.1em;
+            opacity: 0.9;
+            position: relative;
+            z-index: 2;
+            background: rgba(255,255,255,0.1);
+            padding: 8px 16px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+        
+        .last-updated {
+            opacity: 0.95;
+            font-size: 1.1em;
+            position: relative;
+            z-index: 2;
+            background: rgba(255,255,255,0.1);
+            padding: 8px 16px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+        
+        .channel-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 20px;
+            flex-wrap: wrap;
+            gap: 25px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .channel-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 4px solid rgba(255,255,255,0.4);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease;
+        }
+        
+        .channel-avatar:hover {
+            transform: scale(1.1);
+        }
+        
+        .channel-details {
+            text-align: center;
+        }
+        
+        .channel-name {
+            font-size: 1.6em;
+            font-weight: bold;
+            margin-bottom: 8px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .channel-stats {
+            opacity: 0.95;
+            font-size: 1.1em;
+            background: rgba(255,255,255,0.1);
+            padding: 6px 12px;
+            border-radius: 15px;
+            display: inline-block;
+        }
+        
+        .tabs {
+            display: flex;
+            background: linear-gradient(90deg, #f8f9fa 0%, #e9ecef 100%);
+            border-bottom: 3px solid #dee2e6;
+        }
+        
+        .tab {
+            flex: 1;
+            padding: 25px 20px;
+            text-align: center;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 1.2em;
+            font-weight: 700;
+            color: #495057;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .tab::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(30,60,114,0.1), transparent);
+            transition: left 0.6s ease;
+        }
+        
+        .tab:hover::before {
+            left: 100%;
+        }
+        
+        .tab:hover {
+            background: rgba(30,60,114,0.05);
+            color: #1e3c72;
+            transform: translateY(-2px);
+        }
+        
+        .tab.active {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            border-bottom: 4px solid #4caf50;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 16px rgba(30,60,114,0.3);
+        }
+        
+        .tab.active::before {
+            display: none;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 30px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 25px 20px;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #1e3c72, #2a5298, #4caf50);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            border-color: #2a5298;
+        }
+        
+        .stat-value {
+            font-size: 2.2em;
+            font-weight: 800;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+        }
+        
+        .stat-label {
+            color: #6c757d;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            font-weight: 600;
+        }
+        
+        .section {
+            padding: 30px;
+        }
+        
+        .section-title {
+            font-size: 2em;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 25px;
+            text-align: center;
+            font-weight: 700;
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, #1e3c72, #4caf50);
+            border-radius: 2px;
+        }
+        
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+        }
+        
+        .video-card {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .video-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #1e3c72, #2a5298, #4caf50);
+        }
+        
+        .video-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.12);
+            border-color: #2a5298;
+        }
+        
+        .video-header {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 20px;
+            gap: 15px;
+        }
+        
+        .video-rank {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.1em;
+            box-shadow: 0 4px 8px rgba(30,60,114,0.2);
+            flex-shrink: 0;
+        }
+        
+        .video-title {
+            font-size: 1.1em;
+            font-weight: 700;
+            color: #2d3748;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            flex: 1;
+        }
+        
+        .performance-chart {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid #4caf50;
+        }
+        
+        .performance-title {
+            font-size: 0.85em;
+            color: #6c757d;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        .performance-value {
+            font-size: 1.8em;
+            font-weight: 800;
+            background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 5px;
+        }
+        
+        .performance-bar {
+            height: 6px;
+            background: #e9ecef;
+            border-radius: 3px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .performance-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4caf50, #45a049);
+            border-radius: 3px;
+            transition: width 1s ease-out;
+        }
+        
+        .video-metrics {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+        
+        .metric {
+            text-align: center;
+            padding: 12px 8px;
+            background: white;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .metric:hover {
+            border-color: #2a5298;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(42, 82, 152, 0.1);
+        }
+        
+        .metric-value {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #1e3c72;
+            margin-bottom: 4px;
+        }
+        
+        .metric-label {
+            font-size: 0.7em;
+            color: #6c757d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 500;
+        }
+        
+        .insights-section {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+        
+        .insights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+        }
+        
+        .insight-card {
+            background: white;
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+            border-left: 5px solid #4caf50;
+            transition: all 0.3s ease;
+        }
+        
+        .insight-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.12);
+        }
+        
+        .insight-card h3 {
+            color: #1e3c72;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+            font-weight: 700;
+        }
+        
+        .time-slot {
+            background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 10px;
+            margin: 6px 0;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.95em;
+            font-weight: 600;
+            box-shadow: 0 2px 6px rgba(76,175,80,0.3);
+        }
+        
+        .insights-list {
+            list-style: none;
+        }
+        
+        .insights-list li {
+            background: linear-gradient(135deg, #e3f2fd 0%, #e1f5fe 100%);
+            padding: 12px 16px;
+            margin: 8px 0;
+            border-radius: 10px;
+            border-left: 4px solid #2a5298;
+            font-size: 0.95em;
+            transition: all 0.3s ease;
+        }
+        
+        .insights-list li:hover {
+            transform: translateX(5px);
+            background: linear-gradient(135deg, #bbdefb 0%, #b3e5fc 100%);
+        }
+        
+        .charts-section {
+            background: white;
+        }
+        
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(550px, 1fr));
+            gap: 30px;
+        }
+        
+        .chart-container {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            border: 2px solid #f8f9fa;
+            transition: all 0.3s ease;
+        }
+        
+        .chart-container:hover {
+            border-color: #2a5298;
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.12);
+        }
+        
+        .chart-title {
+            font-size: 1.4em;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 700;
+        }
+        
+        .chart-wrapper {
+            position: relative;
+            height: 380px;
+        }
+        
+        .chart-wrapper.small {
+            height: 300px;
+        }
+        
+        .growth-timeline {
+            background: white;
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+            margin-bottom: 25px;
+            max-height: 450px;
+            overflow-y: auto;
+            border: 2px solid #f8f9fa;
+        }
+        
+        .timeline-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #e9ecef;
+            transition: all 0.3s ease;
+        }
+        
+        .timeline-item:hover {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding-left: 10px;
+            border-radius: 8px;
+        }
+        
+        .timeline-item:last-child {
+            border-bottom: none;
+        }
+        
+        .timeline-time {
+            font-size: 0.9em;
+            color: #6c757d;
+            font-weight: 500;
+        }
+        
+        .timeline-growth {
+            font-weight: bold;
+            color: #4caf50;
+            background: linear-gradient(135deg, #e8f5e8 0%, #f1f8e9 100%);
+            padding: 6px 12px;
+            border-radius: 20px;
+        }
+        
+        .timeline-growth.negative {
+            color: #f44336;
+            background: linear-gradient(135deg, #ffebee 0%, #fce4ec 100%);
+        }
+        
+        .error-message {
+            text-align: center;
+            padding: 50px;
+            color: #6c757d;
+            font-size: 1.2em;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 16px;
+            margin: 20px;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 50px;
+            color: #2a5298;
+            font-size: 1.2em;
+        }
+        
+        .enhanced-badge {
+            background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            font-weight: 600;
+            margin-left: 10px;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #2a5298 0%, #4caf50 100%);
+        }
+        
+        @media (max-width: 768px) {
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .video-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+                gap: 15px;
+                padding: 20px;
+            }
+            
+            .tabs {
+                flex-direction: column;
+            }
+            
+            .tab {
+                padding: 20px 15px;
+            }
+            
+            .header h1 {
+                font-size: 2.2em;
+            }
+            
+            .channel-info {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+        
+        /* Animation for cards */
+        .stat-card, .video-card, .insight-card, .chart-container {
+            animation: fadeInUp 0.6s ease-out;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Stagger animation delays */
+        .stat-card:nth-child(1) { animation-delay: 0.1s; }
+        .stat-card:nth-child(2) { animation-delay: 0.2s; }
+        .stat-card:nth-child(3) { animation-delay: 0.3s; }
+        .stat-card:nth-child(4) { animation-delay: 0.4s; }
+        .stat-card:nth-child(5) { animation-delay: 0.5s; }
+        .stat-card:nth-child(6) { animation-delay: 0.6s; }
+        .stat-card:nth-child(7) { animation-delay: 0.7s; }
+        .stat-card:nth-child(8) { animation-delay: 0.8s; }
+    </style>
+</head>
+<body>
+    <div class="container" id="dashboard">
+        <div class="header">
+            <h1>Fast Friends Analytics <span class="enhanced-badge">ENHANCED</span></h1>
+            <p class="subtitle">Advanced Public Data Analysis - Maximum Insights Without Channel Access</p>
+            <p class="last-updated">Loading enhanced data...</p>
+            <div class="channel-info" id="channel-info">
+                <!-- Channel info will be populated by JavaScript -->
+            </div>
+        </div>
+        
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('videos')">📈 Enhanced Video Analytics</button>
+            <button class="tab" onclick="showTab('subscribers')">👥 Subscriber Growth</button>
+            <button class="tab" onclick="showTab('engagement')">💬 Engagement Analysis</button>
+        </div>
+        
+        <!-- Enhanced Video Analytics Tab -->
+        <div id="videos-tab" class="tab-content active">
+            <div class="stats-grid" id="video-stats-grid">
+                <!-- Video stats will be populated by JavaScript -->
+            </div>
+            
+            <div class="section">
+                <div class="section-title">🏆 Top Performing Videos (by Views/Hour)</div>
+                <div class="video-grid" id="video-grid">
+                    <!-- Videos will be populated by JavaScript -->
+                </div>
+            </div>
+            
+            <div class="section insights-section">
+                <div class="section-title">💡 Enhanced Performance Insights</div>
+                <div class="insights-grid" id="video-insights-grid">
+                    <!-- Video insights will be populated by JavaScript -->
+                </div>
+            </div>
+            
+            <div class="section charts-section">
+                <div class="section-title">📊 Video Performance Charts</div>
+                <div class="charts-grid">
+                    <div class="chart-container">
+                        <div class="chart-title">📊 Views Per Hour - Top Videos</div>
+                        <div class="chart-wrapper small">
+                            <canvas id="topVideosChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <div class="chart-title">🚀 Video Momentum Score</div>
+                        <div class="chart-wrapper small">
+                            <canvas id="momentumChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <div class="chart-title">⏰ Posting Hour Performance</div>
+                        <div class="chart-wrapper">
+                            <canvas id="postingHoursChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <div class="chart-title">📅 Day of Week Performance</div>
+                        <div class="chart-wrapper">
+                            <canvas id="dayOfWeekChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Subscriber Analytics Tab -->
+        <div id="subscribers-tab" class="tab-content">
+            <div class="stats-grid" id="subscriber-stats-grid">
+                <!-- Subscriber stats will be populated by JavaScript -->
+            </div>
+            
+            <div class="section">
+                <div class="section-title">📈 Recent Subscriber Growth</div>
+                <div class="growth-timeline" id="growth-timeline">
+                    <!-- Growth timeline will be populated by JavaScript -->
+                </div>
+            </div>
+            
+            <div class="section insights-section">
+                <div class="section-title">👥 Subscriber Growth Insights</div>
+                <div class="insights-grid" id="subscriber-insights-grid">
+                    <!-- Subscriber insights will be populated by JavaScript -->
+                </div>
+            </div>
+            
+            <div class="section charts-section">
+                <div class="section-title">📊 Subscriber Growth Analytics</div>
+                <div class="charts-grid">
+                    <div class="chart-container">
+                        <div class="chart-title">👥 Subscriber Growth by Hour</div>
+                        <div class="chart-wrapper">
+                            <canvas id="subscriberGrowthChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <div class="chart-title">📅 Growth by Day of Week</div>
+                        <div class="chart-wrapper">
+                            <canvas id="subscriberDayChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <div class="chart-title">📈 Subscriber Timeline</div>
+                        <div class="chart-wrapper">
+                            <canvas id="subscriberTimelineChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Engagement Analysis Tab -->
+        <div id="engagement-tab" class="tab-content">
+            <div class="stats-grid" id="engagement-stats-grid">
+                <!-- Engagement stats will be populated by JavaScript -->
+            </div>
+            
+            <div class="section charts-section">
+                <div class="section-title">💬 Engagement Analytics</div>
+                <div class="charts-grid">
+                    <div class="chart-container">
+                        <div class="chart-title">💬 Engagement Rate by Video (%)</div>
+                        <div class="chart-wrapper">
+                            <canvas id="engagementChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <div class="chart-title">👍 Like vs Comment Rates</div>
+                        <div class="chart-wrapper">
+                            <canvas id="likeCommentChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <div class="chart-title">⚡ Engagement Velocity (Per Hour)</div>
+                        <div class="chart-wrapper">
+                            <canvas id="engagementVelocityChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <div class="chart-title">🎯 Content Freshness Impact</div>
+                        <div class="chart-wrapper">
+                            <canvas id="freshnessChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section insights-section">
+                <div class="section-title">🔍 Engagement Insights</div>
+                <div class="insights-grid" id="engagement-insights-grid">
+                    <!-- Engagement insights will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        Chart.defaults.font.family = "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif";
+        Chart.defaults.color = '#4A5568';
+        
+        let analyticsData = null;
+        
+        // Tab switching function
+        function showTab(tabName) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Remove active class from all tabs
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected tab content
+            document.getElementById(tabName + '-tab').classList.add('active');
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+            
+            // Refresh charts if needed
+            if (analyticsData) {
+                setTimeout(() => {
+                    if (tabName === 'subscribers') {
+                        createSubscriberCharts(analyticsData);
+                    } else if (tabName === 'engagement') {
+                        createEngagementCharts(analyticsData);
+                    } else {
+                        createVideoCharts(analyticsData);
+                    }
+                }, 100);
+            }
+        }
+        
+        // Load analytics data
+        async function loadAnalyticsData() {
+            try {
+                // Try different possible paths for the JSON file
+                let response;
+                const possiblePaths = [
+                    'analytics_data.json',
+                    './analytics_data.json',
+                    'fastfriends_data/analytics_data.json'
+                ];
+                
+                for (const path of possiblePaths) {
+                    try {
+                        response = await fetch(path);
+                        if (response.ok) {
+                            console.log(`Successfully loaded data from: ${path}`);
+                            break;
+                        }
+                    } catch (e) {
+                        console.log(`Failed to load from: ${path}`);
+                    }
+                }
+                
+                if (!response || !response.ok) {
+                    throw new Error(`Could not find analytics_data.json in any expected location`);
+                }
+                
+                analyticsData = await response.json();
+                
+                // Validate that we have the required data structure
+                if (!analyticsData.summary || !analyticsData.top_videos) {
+                    throw new Error('Invalid data structure in analytics_data.json');
+                }
+                
+                populateDashboard(analyticsData);
+                createVideoCharts(analyticsData);
+                
+                // Create other charts based on active tab
+                const activeTab = document.querySelector('.tab.active').textContent;
+                if (activeTab.includes('Subscriber')) {
+                    createSubscriberCharts(analyticsData);
+                } else if (activeTab.includes('Engagement')) {
+                    createEngagementCharts(analyticsData);
+                }
+                
+                console.log('Enhanced analytics data loaded successfully:', analyticsData.summary);
+                
+            } catch (error) {
+                console.error('Error loading analytics data:', error);
+                document.querySelector('.last-updated').textContent = 'Error loading data - Run the enhanced Python script first!';
+                
+                // Show error message in main content with more details
+                document.getElementById('video-stats-grid').innerHTML = `
+                    <div class="error-message">
+                        ❌ Cannot load enhanced analytics data.<br>
+                        <strong>Details:</strong> ${error.message}<br><br>
+                        <strong>Solutions:</strong><br>
+                        1. Make sure you ran the enhanced Python script first<br>
+                        2. Check that analytics_data.json exists in the same folder<br>
+                        3. Try refreshing the page
+                    </div>`;
+            }
+        }
+        
+        function populateDashboard(data) {
+            // Update header
+            document.querySelector('.last-updated').textContent = `Last updated: ${data.summary.last_updated}`;
+            
+            // Populate channel info
+            const channelInfo = document.getElementById('channel-info');
+            if (data.channel_info && data.channel_info.channel_title) {
+                channelInfo.innerHTML = `
+                    <img src="${data.channel_info.channel_thumbnail || ''}" alt="Channel Avatar" class="channel-avatar" onerror="this.style.display='none'">
+                    <div class="channel-details">
+                        <div class="channel-name">${data.channel_info.channel_title}</div>
+                        <div class="channel-stats">${data.channel_info.subscriber_count_formatted} subscribers • ${data.channel_info.video_count_formatted} videos</div>
+                    </div>
+                `;
+            }
+            
+            // Populate enhanced video stats
+            const videoStatsGrid = document.getElementById('video-stats-grid');
+            videoStatsGrid.innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-value">${data.summary.total_videos}</div>
+                    <div class="stat-label">Videos</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${data.summary.total_views_formatted}</div>
+                    <div class="stat-label">Total Views</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${data.summary.avg_views_per_hour}</div>
+                    <div class="stat-label">Avg Views/Hour</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${data.summary.avg_engagement_rate}%</div>
+                    <div class="stat-label">Engagement Rate</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${data.summary.viral_videos_10k}</div>
+                    <div class="stat-label">Viral (10K+)</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${data.summary.viral_rate_10k}%</div>
+                    <div class="stat-label">Viral Rate</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${data.summary.avg_like_rate}%</div>
+                    <div class="stat-label">Like Rate</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${data.summary.avg_comment_rate}%</div>
+                    <div class="stat-label">Comment Rate</div>
+                </div>
+            `;
+            
+            // Populate subscriber stats
+            const subscriberStatsGrid = document.getElementById('subscriber-stats-grid');
+            if (data.subscriber_analytics) {
+                subscriberStatsGrid.innerHTML = `
+                    <div class="stat-card">
+                        <div class="stat-value">${data.channel_info.subscriber_count_formatted}</div>
+                        <div class="stat-label">Current Subscribers</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">${data.subscriber_analytics.total_growth}</div>
+                        <div class="stat-label">Total Growth</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">${data.subscriber_analytics.avg_growth_per_hour}</div>
+                        <div class="stat-label">Avg Growth/Hour</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">${data.subscriber_analytics.tracking_duration_hours}h</div>
+                        <div class="stat-label">Tracking Duration</div>
+                    </div>
+                `;
+            }
+            
+            // Populate engagement stats
+            const engagementStatsGrid = document.getElementById('engagement-stats-grid');
+            const avgMomentum = data.top_videos.reduce((sum, v) => sum + v.momentum_score, 0) / data.top_videos.length;
+            const avgEngagementVelocity = data.top_videos.reduce((sum, v) => sum + v.engagement_per_hour, 0) / data.top_videos.length;
+            
+            engagementStatsGrid.innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-value">${data.summary.avg_engagement_rate}%</div>
+                    <div class="stat-label">Avg Engagement Rate</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${data.summary.avg_like_rate}%</div>
+                    <div class="stat-label">Avg Like Rate</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${data.summary.avg_comment_rate}%</div>
+                    <div class="stat-label">Avg Comment Rate</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${avgMomentum.toFixed(1)}</div>
+                    <div class="stat-label">Avg Momentum Score</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${avgEngagementVelocity.toFixed(1)}</div>
+                    <div class="stat-label">Engagement/Hour</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${data.top_videos.filter(v => v.engagement_rate > data.summary.avg_engagement_rate).length}</div>
+                    <div class="stat-label">High Engagement Videos</div>
+                </div>
+            `;
+            
+            // Populate videos with enhanced metrics
+            const videoGrid = document.getElementById('video-grid');
+            const maxViewsPerHour = Math.max(...data.top_videos.map(v => v.views_per_hour));
+            
+            videoGrid.innerHTML = data.top_videos.map((video, index) => `
+                <div class="video-card">
+                    <div class="video-header">
+                        <div class="video-rank">${index + 1}</div>
+                        <div class="video-title">${video.title.length > 60 ? video.title.substring(0, 60) + '...' : video.title}</div>
+                    </div>
+                    
+                    <div class="performance-chart">
+                        <div class="performance-title">Performance Rate</div>
+                        <div class="performance-value">${video.views_per_hour}</div>
+                        <div style="font-size: 0.8em; color: #6c757d; margin-bottom: 10px;">views per hour</div>
+                        <div class="performance-bar">
+                            <div class="performance-fill" style="width: ${(video.views_per_hour / maxViewsPerHour) * 100}%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="video-metrics">
+                        <div class="metric">
+                            <div class="metric-value">${video.views_formatted}</div>
+                            <div class="metric-label">Views</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">${video.engagement_rate}%</div>
+                            <div class="metric-label">Engagement</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">${video.momentum_score}</div>
+                            <div class="metric-label">Momentum</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">${video.days_since_published}d</div>
+                            <div class="metric-label">Age</div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            
+            // Populate enhanced insights
+            const videoInsightsGrid = document.getElementById('video-insights-grid');
+            videoInsightsGrid.innerHTML = `
+                <div class="insight-card">
+                    <h3>🎯 Best Posting Times</h3>
+                    ${data.best_posting_times.map(time => `
+                        <div class="time-slot">
+                            <span>${time.hour_formatted}</span>
+                            <span>${time.avg_views_per_hour} v/h</span>
+                        </div>
+                    `).join('')}
+                </div>
+                
+                <div class="insight-card">
+                    <h3>📈 Enhanced Insights</h3>
+                    <ul class="insights-list">
+                        ${data.insights.map(insight => `<li>${insight}</li>`).join('')}
+                        ${data.best_performer ? `<li>🏆 Best performer: ${data.best_performer.title.substring(0, 40)}...</li>` : ''}
+                    </ul>
+                </div>
+            `;
+            
+            // Populate subscriber insights and timeline
+            if (data.subscriber_analytics) {
+                const subscriberInsightsGrid = document.getElementById('subscriber-insights-grid');
+                subscriberInsightsGrid.innerHTML = `
+                    <div class="insight-card">
+                        <h3>📈 Growth Insights</h3>
+                        <ul class="insights-list">
+                            ${data.subscriber_analytics.insights.map(insight => `<li>${insight}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+                
+                const growthTimeline = document.getElementById('growth-timeline');
+                if (data.subscriber_analytics.growth_data && data.subscriber_analytics.growth_data.length > 0) {
+                    const sortedGrowthData = data.subscriber_analytics.growth_data
+                        .sort((a, b) => new Date(b.period_end) - new Date(a.period_end))
+                        .slice(0, 10);
+                    
+                    growthTimeline.innerHTML = sortedGrowthData.map(growth => `
+                        <div class="timeline-item">
+                            <div class="timeline-time">${new Date(growth.period_end).toLocaleString()}</div>
+                            <div class="timeline-growth ${growth.subscriber_growth < 0 ? 'negative' : ''}">
+                                ${growth.subscriber_growth > 0 ? '+' : ''}${growth.subscriber_growth} subscribers
+                                (${growth.subs_per_hour}/hour)
+                            </div>
+                        </div>
+                    `).join('');
+                } else {
+                    growthTimeline.innerHTML = '<p style="text-align: center; color: #718096;">No growth data available yet. Run the script multiple times to build historical data.</p>';
+                }
+            }
+            
+            // Populate engagement insights
+            const engagementInsightsGrid = document.getElementById('engagement-insights-grid');
+            const highEngagementVideos = data.top_videos.filter(v => v.engagement_rate > data.summary.avg_engagement_rate);
+            const highMomentumVideos = data.top_videos.filter(v => v.momentum_score > avgMomentum);
+            
+            engagementInsightsGrid.innerHTML = `
+                <div class="insight-card">
+                    <h3>🔥 High Engagement Content</h3>
+                    <ul class="insights-list">
+                        ${highEngagementVideos.slice(0, 3).map(video => 
+                            `<li>📹 "${video.title.substring(0, 30)}..." - ${video.engagement_rate}% engagement</li>`
+                        ).join('')}
+                    </ul>
+                </div>
+                
+                <div class="insight-card">
+                    <h3>⚡ Momentum Leaders</h3>
+                    <ul class="insights-list">
+                        ${highMomentumVideos.slice(0, 3).map(video => 
+                            `<li>🚀 "${video.title.substring(0, 30)}..." - Score: ${video.momentum_score}</li>`
+                        ).join('')}
+                    </ul>
+                </div>
+                
+                <div class="insight-card">
+                    <h3>💡 Engagement Tips</h3>
+                    <ul class="insights-list">
+                        <li>🎯 Target ${data.summary.avg_engagement_rate + 1}%+ engagement rate</li>
+                        <li>👍 Like rate benchmark: ${data.summary.avg_like_rate}%</li>
+                        <li>💬 Comment rate benchmark: ${data.summary.avg_comment_rate}%</li>
+                        <li>⚡ Focus on momentum score for new videos</li>
+                    </ul>
+                </div>
+            `;
+        }
+        
+        function createVideoCharts(data) {
+            // Destroy existing charts
+            Chart.getChart('topVideosChart')?.destroy();
+            Chart.getChart('momentumChart')?.destroy();
+            Chart.getChart('postingHoursChart')?.destroy();
+            Chart.getChart('dayOfWeekChart')?.destroy();
+            
+            // Color scheme matching Fast Friends
+            const primaryColors = ['#1e3c72', '#2a5298', '#4caf50', '#45a049', '#388e3c'];
+            const gradientColors = primaryColors.map(color => color + '80'); // Add transparency
+            
+            // Top Videos Chart
+            const ctx1 = document.getElementById('topVideosChart').getContext('2d');
+            new Chart(ctx1, {
+                type: 'bar',
+                data: {
+                    labels: data.chart_data.top_videos_chart.labels,
+                    datasets: [{
+                        label: 'Views/Hour',
+                        data: data.chart_data.top_videos_chart.data,
+                        backgroundColor: gradientColors,
+                        borderColor: primaryColors,
+                        borderWidth: 2,
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { beginAtZero: true, grid: { color: '#f1f3f4' } },
+                        x: { ticks: { maxRotation: 45 }, grid: { display: false } }
+                    }
+                }
+            });
+            
+            // Momentum Chart
+            const ctx2 = document.getElementById('momentumChart').getContext('2d');
+            new Chart(ctx2, {
+                type: 'scatter',
+                data: {
+                    datasets: [{
+                        label: 'Video Momentum',
+                        data: data.chart_data.momentum_chart.data.map((momentum, index) => ({
+                            x: data.chart_data.momentum_chart.ages[index],
+                            y: momentum,
+                            title: data.chart_data.momentum_chart.labels[index]
+                        })),
+                        backgroundColor: function(context) {
+                            const age = context.parsed.x;
+                            if (age <= 7) return 'rgba(76, 175, 80, 0.8)';  // Green for recent
+                            if (age <= 30) return 'rgba(42, 82, 152, 0.8)'; // Blue for medium
+                            return 'rgba(158, 158, 158, 0.8)';               // Gray for old
+                        },
+                        pointRadius: 8,
+                        pointHoverRadius: 10
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { 
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                title: function(context) {
+                                    return context[0].raw.title;
+                                },
+                                label: function(context) {
+                                    return `Momentum: ${context.parsed.y.toFixed(1)} | Age: ${context.parsed.x.toFixed(1)} days`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: { 
+                            title: { display: true, text: 'Days Since Published' },
+                            grid: { color: '#f1f3f4' }
+                        },
+                        y: { 
+                            title: { display: true, text: 'Momentum Score' },
+                            grid: { color: '#f1f3f4' }
+                        }
+                    }
+                }
+            });
+            
+            // Posting Hours Chart
+            const ctx3 = document.getElementById('postingHoursChart').getContext('2d');
+            new Chart(ctx3, {
+                type: 'bar',
+                data: {
+                    labels: data.chart_data.hourly_chart.labels,
+                    datasets: [{
+                        label: 'Avg Views/Hour',
+                        data: data.chart_data.hourly_chart.data,
+                        backgroundColor: function(context) {
+                            const value = context.parsed.y;
+                            if (value >= 100) return '#4caf50';
+                            if (value >= 50) return '#2a5298';
+                            return '#e0e0e0';
+                        },
+                        borderWidth: 1,
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { beginAtZero: true, title: { display: true, text: 'Views/Hour' }, grid: { color: '#f1f3f4' } },
+                        x: { title: { display: true, text: 'Hour of Day' }, grid: { display: false } }
+                    }
+                }
+            });
+            
+            // Day of Week Chart
+            const ctx4 = document.getElementById('dayOfWeekChart').getContext('2d');
+            new Chart(ctx4, {
+                type: 'line',
+                data: {
+                    labels: data.chart_data.daily_chart.labels,
+                    datasets: [{
+                        label: 'Avg Views/Hour',
+                        data: data.chart_data.daily_chart.data,
+                        borderColor: '#2a5298',
+                        backgroundColor: 'rgba(42, 82, 152, 0.1)',
+                        borderWidth: 4,
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: '#2a5298',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 3,
+                        pointRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { beginAtZero: true, title: { display: true, text: 'Views/Hour' }, grid: { color: '#f1f3f4' } },
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
+        }
+        
+        function createEngagementCharts(data) {
+            // Destroy existing charts
+            Chart.getChart('engagementChart')?.destroy();
+            Chart.getChart('likeCommentChart')?.destroy();
+            Chart.getChart('engagementVelocityChart')?.destroy();
+            Chart.getChart('freshnessChart')?.destroy();
+            
+            // Engagement Rate Chart
+            const ctx1 = document.getElementById('engagementChart').getContext('2d');
+            new Chart(ctx1, {
+                type: 'bar',
+                data: {
+                    labels: data.chart_data.engagement_chart.labels,
+                    datasets: [{
+                        label: 'Engagement Rate (%)',
+                        data: data.chart_data.engagement_chart.data,
+                        backgroundColor: function(context) {
+                            const value = context.parsed.y;
+                            if (value >= 5) return '#4caf50';
+                            if (value >= 2) return '#2a5298';
+                            return '#e0e0e0';
+                        },
+                        borderWidth: 1,
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { 
+                            beginAtZero: true, 
+                            title: { display: true, text: 'Engagement Rate (%)' },
+                            grid: { color: '#f1f3f4' }
+                        },
+                        x: { 
+                            ticks: { maxRotation: 45 }, 
+                            grid: { display: false } 
+                        }
+                    }
+                }
+            });
+            
+            // Like vs Comment Chart
+            const ctx2 = document.getElementById('likeCommentChart').getContext('2d');
+            new Chart(ctx2, {
+                type: 'scatter',
+                data: {
+                    datasets: [{
+                        label: 'Videos',
+                        data: data.top_videos.map(v => ({
+                            x: v.like_rate,
+                            y: v.comment_rate,
+                            title: v.title.substring(0, 30)
+                        })),
+                        backgroundColor: 'rgba(42, 82, 152, 0.6)',
+                        borderColor: '#2a5298',
+                        pointRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { 
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                title: function(context) {
+                                    return context[0].raw.title;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: 'Like Rate (%)' } },
+                        y: { title: { display: true, text: 'Comment Rate (%)' } }
+                    }
+                }
+            });
+            
+            // Engagement Velocity Chart
+            const ctx3 = document.getElementById('engagementVelocityChart').getContext('2d');
+            new Chart(ctx3, {
+                type: 'line',
+                data: {
+                    labels: data.top_videos.slice(0, 8).map(v => v.title.substring(0, 15) + '...'),
+                    datasets: [{
+                        label: 'Engagement/Hour',
+                        data: data.top_videos.slice(0, 8).map(v => v.engagement_per_hour),
+                        borderColor: '#4caf50',
+                        backgroundColor: 'rgba(76, 175, 80, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { beginAtZero: true, title: { display: true, text: 'Engagement/Hour' } }
+                    }
+                }
+            });
+            
+            // Freshness Chart
+            const ctx4 = document.getElementById('freshnessChart').getContext('2d');
+            new Chart(ctx4, {
+                type: 'scatter',
+                data: {
+                    datasets: [{
+                        label: 'Content Freshness',
+                        data: data.top_videos.map(v => ({
+                            x: v.days_since_published,
+                            y: v.freshness_factor,
+                            title: v.title.substring(0, 30)
+                        })),
+                        backgroundColor: function(context) {
+                            const freshness = context.parsed.y;
+                            if (freshness > 0.5) return 'rgba(76, 175, 80, 0.8)';
+                            if (freshness > 0.2) return 'rgba(42, 82, 152, 0.8)';
+                            return 'rgba(158, 158, 158, 0.8)';
+                        },
+                        pointRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { 
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                title: function(context) {
+                                    return context[0].raw.title;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: 'Days Since Published' } },
+                        y: { title: { display: true, text: 'Freshness Factor' } }
+                    }
+                }
+            });
+        }
+        
+        function createSubscriberCharts(data) {
+            if (!data.subscriber_analytics) return;
+            
+            // Destroy existing charts
+            Chart.getChart('subscriberGrowthChart')?.destroy();
+            Chart.getChart('subscriberDayChart')?.destroy();
+            Chart.getChart('subscriberTimelineChart')?.destroy();
+            
+            // Subscriber Growth by Hour Chart
+            const ctx1 = document.getElementById('subscriberGrowthChart').getContext('2d');
+            new Chart(ctx1, {
+                type: 'bar',
+                data: {
+                    labels: data.chart_data.subscriber_growth_chart.labels,
+                    datasets: [{
+                        label: 'Avg Subs/Hour',
+                        data: data.chart_data.subscriber_growth_chart.data,
+                        backgroundColor: function(context) {
+                            const value = context.parsed.y;
+                            if (value > 0) return 'rgba(76, 175, 80, 0.8)';
+                            if (value < 0) return 'rgba(244, 67, 54, 0.8)';
+                            return 'rgba(224, 224, 224, 0.8)';
+                        },
+                        borderWidth: 1,
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { 
+                            beginAtZero: true, 
+                            title: { display: true, text: 'Subscribers/Hour' },
+                            grid: { color: '#f1f3f4' }
+                        },
+                        x: { title: { display: true, text: 'Hour of Day' }, grid: { display: false } }
+                    }
+                }
+            });
+            
+            // Subscriber Growth by Day Chart
+            const ctx2 = document.getElementById('subscriberDayChart').getContext('2d');
+            new Chart(ctx2, {
+                type: 'line',
+                data: {
+                    labels: data.subscriber_analytics.daily_growth.day_names,
+                    datasets: [{
+                        label: 'Avg Subs/Hour',
+                        data: data.subscriber_analytics.daily_growth.averages,
+                        borderColor: '#4caf50',
+                        backgroundColor: 'rgba(76, 175, 80, 0.1)',
+                        borderWidth: 4,
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: '#4caf50',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 3,
+                        pointRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { 
+                            beginAtZero: true, 
+                            title: { display: true, text: 'Subscribers/Hour' },
+                            grid: { color: '#f1f3f4' }
+                        },
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
+            
+            // Subscriber Timeline Chart
+            const ctx3 = document.getElementById('subscriberTimelineChart').getContext('2d');
+            if (data.chart_data.subscriber_timeline && data.chart_data.subscriber_timeline.length > 0) {
+                new Chart(ctx3, {
+                    type: 'line',
+                    data: {
+                        labels: data.chart_data.subscriber_timeline.map(item => 
+                            new Date(item.period_end).toLocaleDateString()
+                        ),
+                        datasets: [{
+                            label: 'Subscriber Count',
+                            data: data.chart_data.subscriber_timeline.map(item => item.end_subs),
+                            borderColor: '#2a5298',
+                            backgroundColor: 'rgba(42, 82, 152, 0.1)',
+                            borderWidth: 4,
+                            fill: true,
+                            tension: 0.4,
+                            pointBackgroundColor: '#2a5298',
+                            pointBorderColor: '#fff',
+                            pointBorderWidth: 3,
+                            pointRadius: 6
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            y: { 
+                                title: { display: true, text: 'Subscriber Count' },
+                                grid: { color: '#f1f3f4' }
+                            },
+                            x: { 
+                                title: { display: true, text: 'Date' },
+                                grid: { display: false }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+        
+        // Load data when page loads
+        window.addEventListener('load', loadAnalyticsData);
+        
+        // Auto-refresh every 5 minutes
+        setInterval(loadAnalyticsData, 5 * 60 * 1000);
+    </script>
+</body>
+</html>
