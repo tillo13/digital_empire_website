@@ -325,6 +325,40 @@ body {
     margin-top: 8px;
 }
 
+.footer-projects {
+    border-top: 1px solid var(--yt-spec-outline);
+    padding-top: 20px;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.footer-projects h4 {
+    color: var(--yt-spec-text-secondary);
+    font-size: 13px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+}
+
+.footer-project-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px 16px;
+}
+
+.footer-project-links a {
+    color: var(--yt-spec-text-secondary);
+    text-decoration: none;
+    font-size: 13px;
+    transition: color 0.2s;
+}
+
+.footer-project-links a:hover {
+    color: #ff0000;
+}
+
 /* ========================================
    5. NOTIFICATIONS
    ======================================== */

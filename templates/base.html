@@ -6,6 +6,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Digital Empire Network{% endblock %}</title>
 
+    <!-- SEO Meta -->
+    <meta name="description" content="{% block meta_description %}Digital Empire Network — premium YouTube gaming network with 3.5M+ subscribers and 500M+ views across 7 family-friendly Roblox gaming channels. Brand partnerships from $2K.{% endblock %}">
+    <link rel="canonical" href="{% block canonical_url %}https://digitalempiretv.com{{ request.path }}{% endblock %}">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="{% block og_title %}Digital Empire Network — YouTube Gaming Network{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}Premium YouTube gaming network — 3.5M+ subscribers, 500M+ views across 7 family-friendly channels. Brand-safe Roblox gaming content since 2011.{% endblock %}">
+    <meta property="og:url" content="{% block og_url %}https://digitalempiretv.com{{ request.path }}{% endblock %}">
+    <meta property="og:image" content="{% block og_image %}https://digitalempiretv.com/static/og-card.svg{% endblock %}">
+    <meta property="og:type" content="{% block og_type %}website{% endblock %}">
+    <meta property="og:site_name" content="Digital Empire Network">
+
+    <!-- RSS -->
+    <link rel="alternate" type="application/rss+xml" title="Digital Empire Network" href="/feed.xml">
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"Organization","name":"Digital Empire Network","url":"https://digitalempiretv.com/","description":"Premium YouTube gaming network — 3.5M+ subscribers, 500M+ views across multiple channels.","sameAs":["https://www.youtube.com/@realredninja","https://www.youtube.com/@timmehchannel","https://noqout.com"]}
+    </script>
+
     <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-B876QNS855"></script>
     <script>
@@ -208,6 +228,18 @@
                 <p>Daily Content Updates</p>
             </div>
         </div>
+        <div class="footer-projects">
+            <h4>More Projects</h4>
+            <div class="footer-project-links">
+                <a href="https://noqout.com" target="_blank" rel="noopener">noqout.com</a>
+                <a href="https://pilgri.ms" target="_blank" rel="noopener">pilgri.ms</a>
+                <a href="https://kindness.social" target="_blank" rel="noopener">kindness.social</a>
+                <a href="https://crab.travel" target="_blank" rel="noopener">crab.travel</a>
+                <a href="https://wattson.ac" target="_blank" rel="noopener">wattson.ac</a>
+                <a href="https://scatterbrain.us" target="_blank" rel="noopener">scatterbrain.us</a>
+            </div>
+        </div>
+
         <div class="footer-bottom">
             <p>© 2025 Digital Empire Network. All rights reserved. A premium YouTube certified partner.</p>
             {% block footer_extra %}

@@ -14,7 +14,7 @@ import logging
 import sys
 from typing import Dict, Any, Optional
 
-from flask import Flask, render_template, jsonify, request, Response
+from flask import Flask, render_template, jsonify, request, Response, redirect
 from dotenv import load_dotenv
 
 # Add these imports at the top of main.py (if not already present)
@@ -277,11 +277,23 @@ def should_update_cache() -> bool:
     return False
 
 
+# Canonical host enforcement: 301 www → non-www so Google sees one authoritative URL.
+# Without this, both hostnames serve 200 and Google marks pages "Duplicate without user-selected canonical".
+CANONICAL_HOST = 'digitalempiretv.com'
+
+@app.before_request
+def force_canonical_host():
+    host = request.host.split(':')[0]
+    if host == f'www.{CANONICAL_HOST}':
+        return redirect(f'https://{CANONICAL_HOST}{request.full_path.rstrip("?")}', code=301)
+
+
 # Flask Routes
 @app.route('/sitemap.xml')
 def sitemap():
-    host = request.host_url.rstrip('/')
-    skip = {'api', 'admin', 'auth', 'login', 'logout', 'callback', 'health', 'sitemap', 'robots', 'tasks', 'cron', 'debug'}
+    host = f'https://{CANONICAL_HOST}'
+    skip = {'api', 'admin', 'auth', 'login', 'logout', 'callback', 'health', 'sitemap', 'robots', 'tasks', 'cron', 'debug', 'feed'}
+    today = datetime.datetime.now().strftime('%Y-%m-%d')
     urls = []
     for rule in app.url_map.iter_rules():
         if 'GET' not in rule.methods or rule.arguments:
@@ -292,8 +304,11 @@ def sitemap():
             continue
         if path.startswith('/api/') or path.startswith('/admin') or path.startswith('/static'):
             continue
-        priority = '1.0' if path == '/' else '0.6'
-        urls.append(f'  <url><loc>{host}{path}</loc><priority>{priority}</priority></url>')
+        # Skip non-page routes (robots.txt, sitemap.xml, .txt files, feed)
+        if path.endswith('.txt') or path.endswith('.xml'):
+            continue
+        priority = '1.0' if path == '/' else '0.7' if path in ('/about', '/media_kit', '/contact') else '0.6'
+        urls.append(f'  <url>\n    <loc>{host}{path}</loc>\n    <lastmod>{today}</lastmod>\n    <priority>{priority}</priority>\n  </url>')
     xml = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + '\n'.join(sorted(urls)) + '\n</urlset>'
     return Response(xml, mimetype='application/xml')
 
@@ -302,6 +317,41 @@ def robots():
     host = request.host_url.rstrip('/')
     content = f'User-agent: *\nAllow: /\nSitemap: {host}/sitemap.xml\n'
     return Response(content, mimetype='text/plain')
+
+
+@app.route('/b4c9ebbc8faa4d7b8b2b8104b6511fee.txt')
+def indexnow_key():
+    """IndexNow verification key"""
+    return Response('b4c9ebbc8faa4d7b8b2b8104b6511fee', mimetype='text/plain')
+
+
+@app.route('/feed.xml')
+def rss_feed():
+    """RSS feed with network channel data"""
+    host = request.host_url.rstrip('/')
+    data = get_cache_data()
+    now = datetime.datetime.now().strftime('%a, %d %b %Y %H:%M:%S +0000')
+    items = []
+    for ch in data.get('channels', []):
+        items.append(f'''    <item>
+      <title>{ch.get("title", "")} — {ch.get("subscriber_count_formatted", "")} subscribers</title>
+      <link>{ch.get("url", "")}</link>
+      <description>{ch.get("title", "")} has {ch.get("view_count_formatted", "")} views, {ch.get("video_count_formatted", "")} videos, and {ch.get("subscriber_count_formatted", "")} subscribers.</description>
+      <guid>{ch.get("url", "")}</guid>
+    </item>''')
+    xml = f'''<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Digital Empire Network</title>
+    <link>{host}</link>
+    <description>Premium YouTube gaming network — channel stats and updates.</description>
+    <language>en-us</language>
+    <lastBuildDate>{now}</lastBuildDate>
+    <atom:link href="{host}/feed.xml" rel="self" type="application/rss+xml"/>
+{chr(10).join(items)}
+  </channel>
+</rss>'''
+    return Response(xml, mimetype='application/rss+xml')
 
 @app.route('/')
 def index():

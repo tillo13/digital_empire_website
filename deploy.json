@@ -1,0 +1,7 @@
+{
+    "project_id": "digital-empire-461123",
+    "app_name": "Digital Empire TV",
+    "github_repo": "https://github.com/tillo13/digital_empire_website.git",
+    "custom_domain": "https://digitalempiretv.com",
+    "cron_yaml": false
+}
