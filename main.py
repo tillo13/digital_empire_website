@@ -285,7 +285,7 @@ CANONICAL_HOST = 'digitalempiretv.com'
 def force_canonical_host():
     host = request.host.split(':')[0]
     if host == f'www.{CANONICAL_HOST}':
-        return redirect(f'https://{CANONICAL_HOST}{request.full_path.rstrip("?")}', code=301)
+        return redirect(f'https://{CANONICAL_HOST}{request.full_path}', code=301)
 
 
 # Flask Routes
