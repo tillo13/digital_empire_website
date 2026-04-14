@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python /Users/at/Desktop/code/_infrastructure/deploy/deploy.py)",
+      "Bash(python /Users/at/Desktop/code/_infrastructure/deploy/deploy.py \"Add ditch_digging.png to static/files\")"
+    ]
+  }
+}
