@@ -6,6 +6,9 @@ Layers:
 3. Content pattern blocklist (catches SEO pitches, marketing spam)
 4. Email domain blocklist (disposable/known-spam domains)
 5. IP rate limiting (in-memory, resets on deploy)
+6. Normalized-email rate limiting — collapses Gmail dot/plus variants so
+   `a.b.c@gmail.com`, `abc@gmail.com`, and `abc+tag@gmail.com` share a bucket
+   (added 2026-04-16 after pilgrims.world waitlist was flooded with dot spam)
 """
 
 import logging
@@ -53,17 +56,39 @@ BLOCKED_DOMAINS = {
     'binkmail.com', 'safetymail.info', 'filzmail.com',
 }
 
+# ── Gmail dot/plus normalization ─────────────────────────────────────────
+GMAIL_DOMAINS = {'gmail.com', 'googlemail.com'}
+
 # ── Rate limiting ────────────────────────────────────────────────────────
-# {ip: [timestamp, timestamp, ...]}
-_submissions: dict[str, list[float]] = defaultdict(list)
-RATE_LIMIT = 3          # max submissions
-RATE_WINDOW = 3600      # per this many seconds (1 hour)
+# Two buckets: one keyed by IP, one by normalized email.
+_ip_submissions: dict[str, list[float]] = defaultdict(list)
+_email_submissions: dict[str, list[float]] = defaultdict(list)
+RATE_LIMIT_IP = 3
+RATE_LIMIT_EMAIL = 2
+RATE_WINDOW = 3600      # seconds (1 hour)
 
 
-def _clean_old(ip: str):
+def normalize_email(email: str) -> str:
+    """Lowercase, strip, and for Gmail: drop dots in local part + strip +tags.
+
+    Gmail routes `a.b.c@gmail.com`, `abc@gmail.com`, and `abc+foo@gmail.com`
+    all to the same inbox, so collapse them into one rate-limit key.
+    `googlemail.com` is an alias for `gmail.com` — treat as one.
+    """
+    email = (email or '').strip().lower()
+    if '@' not in email:
+        return email
+    local, domain = email.rsplit('@', 1)
+    if domain in GMAIL_DOMAINS:
+        local = local.split('+', 1)[0].replace('.', '')
+        domain = 'gmail.com'
+    return f'{local}@{domain}'
+
+
+def _clean_old(bucket: dict[str, list[float]], key: str):
     """Remove timestamps older than the rate window."""
     cutoff = time.time() - RATE_WINDOW
-    _submissions[ip] = [t for t in _submissions[ip] if t > cutoff]
+    bucket[key] = [t for t in bucket[key] if t > cutoff]
 
 
 def check_spam(data: dict, ip: str, fields: list[str] | None = None) -> str | None:
@@ -79,7 +104,7 @@ def check_spam(data: dict, ip: str, fields: list[str] | None = None) -> str | No
         None if clean, or a short reason string if spam.
         The reason is for logging only; never expose to the submitter.
     """
-    # 1. Honeypot: check both common field names
+    # 1. Honeypot: check common field names
     for hp_field in ('website', 'honeypot', 'url', 'fax'):
         if data.get(hp_field, '').strip():
             return f'honeypot:{hp_field}'
@@ -93,18 +118,23 @@ def check_spam(data: dict, ip: str, fields: list[str] | None = None) -> str | No
     if time_open < 3000:
         return f'too_fast:{time_open}ms'
 
-    # 3. Rate limit by IP
-    _clean_old(ip)
-    if len(_submissions[ip]) >= RATE_LIMIT:
-        return f'rate_limit:{ip}'
-    # Don't record yet; record after we confirm it's not spam
+    # 3. IP rate limit
+    _clean_old(_ip_submissions, ip)
+    if len(_ip_submissions[ip]) >= RATE_LIMIT_IP:
+        return f'rate_limit_ip:{ip}'
 
-    # 4. Email domain check
+    # 4. Email domain check + normalized-email rate limit
     email = data.get('email', '')
-    if '@' in email:
-        domain = email.rsplit('@', 1)[1].strip().lower()
+    normalized = normalize_email(email)
+    if '@' in normalized:
+        domain = normalized.rsplit('@', 1)[1]
         if domain in BLOCKED_DOMAINS:
             return f'blocked_domain:{domain}'
+
+    if normalized:
+        _clean_old(_email_submissions, normalized)
+        if len(_email_submissions[normalized]) >= RATE_LIMIT_EMAIL:
+            return f'rate_limit_email:{normalized}'
 
     # 5. Content pattern scan
     if fields is None:
@@ -115,5 +145,7 @@ def check_spam(data: dict, ip: str, fields: list[str] | None = None) -> str | No
             return f'content:{desc}'
 
     # All clear: record this submission for rate limiting
-    _submissions[ip].append(time.time())
+    _ip_submissions[ip].append(time.time())
+    if normalized:
+        _email_submissions[normalized].append(time.time())
     return None
