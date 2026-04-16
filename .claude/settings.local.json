@@ -2,7 +2,14 @@
   "permissions": {
     "allow": [
       "Bash(python /Users/at/Desktop/code/_infrastructure/deploy/deploy.py)",
-      "Bash(python /Users/at/Desktop/code/_infrastructure/deploy/deploy.py \"Add ditch_digging.png to static/files\")"
+      "Bash(python /Users/at/Desktop/code/_infrastructure/deploy/deploy.py \"Add ditch_digging.png to static/files\")",
+      "Bash(grep -l \"type.*hint\\\\|def.*->\" /Users/at/Desktop/code/digital_empire_tv/*.py)",
+      "Bash(head -20 /Users/at/Desktop/code/digital_empire_tv/templates/*.html)",
+      "Bash(wc:*)",
+      "Bash(head -30 /Users/at/Desktop/code/digital_empire_tv/static/js/*.js)",
+      "Bash(grep:*)",
+      "Bash(FILTER_BRANCH_SQUELCH_WARNING=1 git filter-branch -f --msg-filter 'sed \"/Co-Authored-By: Claude/d\" | sed \"/^$/d\"' c02f27b^..HEAD)",
+      "Bash(curl -sI https://digitalempiretv.com/static/files/ditch_digging.png)"
     ]
   }
 }
