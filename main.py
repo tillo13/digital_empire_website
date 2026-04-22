@@ -493,7 +493,12 @@ def api_contact():
 
         # Spam guard (shared across all kumori sites)
         from utilities.spam_guard import check_spam
-        spam_reason = check_spam(data, request.remote_addr)
+        spam_reason = check_spam(
+            data, request.remote_addr,
+            origin=request.headers.get('Origin') or request.headers.get('Referer'),
+            user_agent=request.headers.get('User-Agent'),
+            expected_hosts=['digital-empire.tv', 'www.digital-empire.tv', 'digital-empire-tv.appspot.com'],
+        )
         if spam_reason:
             logger.warning(f"Spam blocked: {spam_reason} from {request.remote_addr}")
             return jsonify({'status': 'error', 'message': 'Invalid submission'}), 400
