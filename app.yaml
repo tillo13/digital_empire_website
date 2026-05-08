@@ -3,6 +3,12 @@ instance_class: F1
 
 entrypoint: gunicorn -b :$PORT main:app
 
+# Mount kumori-404602 Cloud SQL socket so visitor_logging can write
+# to kumori_ops.visitor_log (cross-project — this is a read-only client
+# of kumori; nothing about digital_empire_tv stores data here).
+beta_settings:
+  cloud_sql_instances: kumori-404602:us-central1:kumori
+
 automatic_scaling:
   min_instances: 0
   max_instances: 3
