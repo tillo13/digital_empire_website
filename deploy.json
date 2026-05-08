@@ -8,6 +8,10 @@
     {
       "src": "spam_control/spam_guard.py",
       "dst": "utilities/spam_guard.py"
+    },
+    {
+      "src": "visitor_logging/visitor_logging.py",
+      "dst": "utilities/visitor_logging.py"
     }
   ]
 }

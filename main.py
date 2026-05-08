@@ -41,6 +41,13 @@ logger = logging.getLogger('DigitalEmpire')
 
 # Initialize Flask app
 app = Flask(__name__)
+
+# Cross-app visitor logging → kumori_ops.visitor_log
+try:
+    from utilities.visitor_logging import install_middleware as _install_visitor_logging
+    _install_visitor_logging(app, 'digital_empire_tv')
+except Exception as _vl_e:
+    pass
 app.config['JSON_SORT_KEYS'] = False
 
 # Global cache for channel data
