@@ -24,11 +24,7 @@
     <!-- Structured Data -->
     <script type="application/ld+json">
     {"@context":"https://schema.org","@type":"Organization","name":"Digital Empire Network","url":"https://digitalempiretv.com/","description":"Premium YouTube gaming network — 3.5M+ subscribers, 500M+ views across multiple channels.","sameAs":["https://www.youtube.com/@realredninja","https://www.youtube.com/@timmehchannel","https://noqout.com"]}
-    </script>
-
-    <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-B876QNS855"></script>
-    <script>
+    </script><script>
         window.dataLayer = window.dataLayer || [];
         function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
@@ -48,6 +44,7 @@
     <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
     {% block extra_styles %}{% endblock %}
+    {{ ga_snippet('digital_empire_tv') | safe }}
 </head>
 
 <body>
