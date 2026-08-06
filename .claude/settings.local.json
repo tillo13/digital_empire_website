@@ -9,7 +9,10 @@
       "Bash(head -30 /Users/at/Desktop/code/digital_empire_tv/static/js/*.js)",
       "Bash(grep:*)",
       "Bash(FILTER_BRANCH_SQUELCH_WARNING=1 git filter-branch -f --msg-filter 'sed \"/Co-Authored-By: Claude/d\" | sed \"/^$/d\"' c02f27b^..HEAD)",
-      "Bash(curl -sI https://digitalempiretv.com/static/files/ditch_digging.png)"
+      "Bash(curl -sI https://digitalempiretv.com/static/files/ditch_digging.png)",
+      "Bash(curl -s --max-time 10 https://digitalempiretv.com/api/status)",
+      "Bash(mkdir -p _oneoff)",
+      "Bash(cp channel_data.json channel_data.json.bak)"
     ]
   }
 }
