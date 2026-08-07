@@ -22,7 +22,10 @@
       "Bash(/usr/local/bin/python3.12 -m venv venv)",
       "Bash(venv/bin/python -c \"import flask, google.cloud.storage, psycopg2; print\\('venv OK py3.12'\\)\")",
       "Bash(venv/bin/python -)",
-      "Bash(deploy \"self-updating channel data: daily cron -> /api/refresh \\(cron-gated\\) -> GCS snapshot, instances read GCS hourly\")"
+      "Bash(deploy \"self-updating channel data: daily cron -> /api/refresh \\(cron-gated\\) -> GCS snapshot, instances read GCS hourly\")",
+      "Bash(curl -s -o /dev/null -w '%{http_code}' https://digitalempiretv.com/api/refresh)",
+      "Bash(echo \"refresh gate: $\\(curl -s -o /dev/null -w '%{http_code}' https://digitalempiretv.com/api/refresh\\)\")",
+      "Bash(curl -s https://digitalempiretv.com/ -o /dev/null -w \"index: %{http_code}\\\\n\")"
     ]
   }
 }

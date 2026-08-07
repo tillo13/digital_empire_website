@@ -14,6 +14,11 @@ from googleapiclient.errors import HttpError
 
 logger = logging.getLogger('DigitalEmpire.YouTube')
 
+# Upper bound on a single channel's uploads crawl. The whole network is ~2.3K
+# videos (~112 quota units/day against a 10,000 limit), so this only exists to
+# keep an unexpectedly huge library from eating the daily quota in one refresh.
+MAX_VIDEOS_PER_CHANNEL = 10000
+
 # YouTube Channel Configurations
 CHANNEL_MAPPINGS = {
     'Dexter Playz': {
@@ -105,20 +110,41 @@ class YouTubeClient:
             logger.error(f"Error fetching channel details: {e}")
             return None
     
-    def get_channel_videos(self, uploads_playlist_id: str, max_results: int = 50) -> List[str]:
-        """Get video IDs from channel uploads playlist"""
+    def get_channel_videos(self, uploads_playlist_id: str, max_videos: int = MAX_VIDEOS_PER_CHANNEL) -> List[str]:
+        """Get EVERY video ID from a channel's uploads playlist.
+
+        The API caps a page at 50 items, so a full library needs pagination.
+        Without it every downstream total (likes, comments, viral counts) is a
+        50-video sample published as a lifetime figure.
+        """
+        video_ids: List[str] = []
+        page_token = None
+
         try:
-            response = self.youtube.playlistItems().list(
-                part="contentDetails",
-                playlistId=uploads_playlist_id,
-                maxResults=max_results
-            ).execute()
-            
-            return [item['contentDetails']['videoId'] for item in response.get('items', [])]
-            
+            while len(video_ids) < max_videos:
+                response = self.youtube.playlistItems().list(
+                    part="contentDetails",
+                    playlistId=uploads_playlist_id,
+                    maxResults=50,
+                    pageToken=page_token
+                ).execute()
+
+                video_ids.extend(item['contentDetails']['videoId']
+                                 for item in response.get('items', []))
+
+                page_token = response.get('nextPageToken')
+                if not page_token:
+                    break
+            else:
+                logger.warning(f"Hit the {max_videos}-video cap for playlist {uploads_playlist_id}; "
+                               f"totals will cover only the newest {max_videos}")
+
         except HttpError as e:
-            logger.error(f"Error fetching channel videos: {e}")
-            return []
+            # Return the partial crawl rather than nothing — callers record how many
+            # were actually scanned, so a short read never masquerades as a total.
+            logger.error(f"Error fetching channel videos after {len(video_ids)}: {e}")
+
+        return video_ids[:max_videos]
     
     def get_videos_details(self, video_ids: List[str]) -> List[Dict[str, Any]]:
         """Get detailed information for multiple videos"""
@@ -254,7 +280,7 @@ def calculate_value_metrics(channel_data: Dict[str, Any], all_videos: List[Dict[
     million_view_videos = 0
     
     if all_videos:
-        # Count from ALL videos
+        scanned = len(all_videos)
         for video in all_videos:
             views = int(video.get('statistics', {}).get('viewCount', 0))
             if views >= viral_threshold:
@@ -263,16 +289,22 @@ def calculate_value_metrics(channel_data: Dict[str, Any], all_videos: List[Dict[
                 million_view_videos += 1
     elif 'top_videos' in channel_data:
         # Fallback to top videos if we don't have all videos
+        scanned = len(channel_data['top_videos'])
         for video in channel_data['top_videos']:
             if video.get('views', 0) >= viral_threshold:
                 viral_videos += 1
             if video.get('views', 0) >= 1_000_000:
                 million_view_videos += 1
-    
+    else:
+        scanned = 0
+
+    channel_data['videos_scanned'] = scanned
     channel_data['viral_videos'] = viral_videos
     channel_data['million_view_videos'] = million_view_videos
-    channel_data['viral_rate'] = round((viral_videos / max(1, channel_data['video_count'])) * 100, 1) if channel_data['video_count'] > 0 else 0
-    
+    # Divide by what was actually counted. Pairing a scanned numerator with the
+    # full-library denominator is what rendered a 90%-viral channel as 3.6%.
+    channel_data['viral_rate'] = round((viral_videos / scanned) * 100, 1) if scanned else 0.0
+
     # Views per subscriber (loyalty metric)
     if channel_data['subscriber_count'] > 0:
         loyalty_index = round(channel_data['view_count'] / channel_data['subscriber_count'], 1)
@@ -548,6 +580,7 @@ def get_channel_data(youtube_client: YouTubeClient, channel_handle: str, display
     logger.info(f"✓ {display_name}: {channel_data['view_count_formatted']} views, "
               f"{channel_data['subscriber_count_formatted']} subs, "
               f"{channel_data.get('monthly_reach_formatted', 'N/A')} monthly reach, "
+              f"{channel_data.get('videos_scanned', 0)}/{channel_data['video_count']} videos scanned, "
               f"{channel_data.get('viral_videos', 0)} viral videos (10K+), "
               f"{channel_data.get('performance_tier', 'N/A')} tier ({channel_data.get('tier_points', 0)} pts)")
     
@@ -594,6 +627,11 @@ def calculate_network_totals(channels: List[Dict[str, Any]]) -> Dict[str, Any]:
 
 
     
+    # How much of the library the crawl actually covered. Equal to total_videos
+    # on a healthy refresh; a shortfall means the engagement totals below are
+    # partial and should not be read as lifetime figures.
+    total_scanned = sum(ch.get('videos_scanned', 0) for ch in channels)
+
     # Value metrics totals
     total_monthly_reach = sum(ch.get('monthly_reach', 0) for ch in channels)
     total_viral_videos = sum(ch.get('viral_videos', 0) for ch in channels)
@@ -626,7 +664,10 @@ def calculate_network_totals(channels: List[Dict[str, Any]]) -> Dict[str, Any]:
         'subscribers_formatted': format_number(total_subscribers),
         'views_formatted': format_number(total_views),
         'videos_formatted': format_number(total_videos),
-        
+
+        # Crawl coverage — equals videos on a complete refresh
+        'videos_scanned': total_scanned,
+
         # Engagement metrics
         'total_comments': total_comments,
         'total_comments_formatted': format_number(total_comments),
