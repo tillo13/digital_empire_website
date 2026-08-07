@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """
-Digital Empire Network - Main Application (Static Data on Startup)
-Uses static channel_data.json on startup, API refresh available when needed
+Digital Empire Network - Main Application
+Serves channel data from a GCS snapshot refreshed daily by cron (/api/refresh);
+bundled channel_data.json is the cold-start fallback.
 """
 
 import html as html_mod
@@ -68,6 +69,10 @@ channel_cache = {
 # Configuration
 CACHE_DURATION = 3600  # 1 hour
 
+# GCS persistence — cron-refreshed snapshot survives instance recycling
+GCS_BUCKET = 'digital-empire-461123.appspot.com'
+GCS_BLOB = 'channel_data.json'
+
 
 def get_api_key() -> Optional[str]:
     """Retrieve API key from various sources"""
@@ -94,6 +99,36 @@ def get_api_key() -> Optional[str]:
     
     logger.error("No API key found in any source!")
     return None
+
+
+def save_data_to_gcs(data: Dict[str, Any]) -> bool:
+    """Persist refreshed channel data to GCS so all instances (and cold starts) see it"""
+    try:
+        from google.cloud import storage
+        bucket = storage.Client().bucket(GCS_BUCKET)
+        bucket.blob(GCS_BLOB).upload_from_string(
+            json.dumps(data), content_type='application/json')
+        logger.info(f"Saved channel data to gs://{GCS_BUCKET}/{GCS_BLOB}")
+        return True
+    except Exception as e:
+        logger.error(f"Failed to save channel data to GCS: {e}")
+        return False
+
+
+def load_data_from_gcs() -> Optional[Dict[str, Any]]:
+    """Load the latest cron-refreshed snapshot from GCS"""
+    try:
+        from google.cloud import storage
+        blob = storage.Client().bucket(GCS_BUCKET).blob(GCS_BLOB)
+        if not blob.exists():
+            return None
+        data = json.loads(blob.download_as_text())
+        ensure_data_fields(data)
+        logger.info(f"Loaded channel data from gs://{GCS_BUCKET}/{GCS_BLOB}")
+        return data
+    except Exception as e:
+        logger.warning(f"Could not load channel data from GCS: {e}")
+        return None
 
 
 def load_static_data() -> Optional[Dict[str, Any]]:
@@ -204,7 +239,10 @@ def update_channel_data() -> None:
                 'update_time': datetime.datetime.now().isoformat()
             }
             channel_cache['last_updated'] = datetime.datetime.now()
-        
+
+        # Persist so other instances and future cold starts get the fresh data
+        save_data_to_gcs(channel_cache['data'])
+
         # Log summary with REAL metrics
         logger.info("=" * 60)
         logger.info(f"Update completed successfully!")
@@ -252,15 +290,27 @@ def update_channel_data() -> None:
 
 
 def get_cache_data() -> Dict[str, Any]:
-    """Get cached data or return static/default structure"""
+    """Get cached data, refreshing from GCS when stale; falls back to bundled JSON"""
+    now = datetime.datetime.now()
+    with channel_cache['lock']:
+        if channel_cache['data'] and channel_cache['last_updated'] and \
+                (now - channel_cache['last_updated']).total_seconds() < CACHE_DURATION:
+            return channel_cache['data']
+
+    # Memory cache empty or stale — pull the latest cron snapshot from GCS,
+    # else fall back to the bundled static file. Either result is cached with a
+    # timestamp so GCS is hit at most once per CACHE_DURATION per instance.
+    fresh_data = load_data_from_gcs() or load_static_data()
+    if fresh_data:
+        with channel_cache['lock']:
+            channel_cache['data'] = fresh_data
+            channel_cache['last_updated'] = now
+        return fresh_data
+
+    # Nothing loadable — serve stale memory cache if we have one
     with channel_cache['lock']:
         if channel_cache['data']:
             return channel_cache['data']
-    
-    # Try static data
-    static_data = load_static_data()
-    if static_data:
-        return static_data
     
     # Return default with real structure
     return {
@@ -381,9 +431,14 @@ def index():
 
 @app.route('/api/refresh')
 def refresh_data():
-    """Force refresh of channel data (ONLY way to update data)"""
-    logger.info("Manual refresh requested via API")
-    
+    """Refresh channel data — GAE cron only (header can't be forged externally)"""
+    on_gae = os.getenv('GAE_ENV', '').startswith('standard')
+    if on_gae and request.headers.get('X-Appengine-Cron') != 'true':
+        logger.warning(f"Rejected non-cron refresh attempt from {request.remote_addr}")
+        return jsonify({'error': 'refresh is cron-only'}), 403
+
+    logger.info("Refresh requested (cron or local)")
+
     thread = threading.Thread(target=update_channel_data)
     thread.daemon = True
     thread.start()

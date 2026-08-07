@@ -51,6 +51,17 @@ SPAM_PATTERNS = [
      'lead generation pitch'),
     (re.compile(r'(first page|page one|top\s+(of\s+)?google)', re.I),
      'Google ranking promise'),
+    # Lottery / jackpot / crypto-windfall spam (kindness.social 'Russellattib'
+    # wave, 2026-06/07: one shortlink + $27,000,000 jackpot pitch per message —
+    # sailed under the SEO-shaped patterns above).
+    (re.compile(r'(jack\s?pot|lottery|mega.?millions|powerball)', re.I),
+     'lottery/jackpot spam'),
+    (re.compile(r'\$\s?\d[\d,.]{5,}[\d]\s*(jackpot|prize|winning|payout)?', re.I),
+     'large money-figure bait'),
+    (re.compile(r'(withdraw|claim|receive).{0,30}(btc|bitcoin|eth|crypto)', re.I),
+     'crypto-windfall spam'),
+    (re.compile(r'(winning formula|big leagues|payday|shortcut to a big)', re.I),
+     'get-rich pitch phrasing'),
 ]
 
 # ── Disposable / known-spam email domains ────────────────────────────────

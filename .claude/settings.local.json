@@ -12,7 +12,17 @@
       "Bash(curl -sI https://digitalempiretv.com/static/files/ditch_digging.png)",
       "Bash(curl -s --max-time 10 https://digitalempiretv.com/api/status)",
       "Bash(mkdir -p _oneoff)",
-      "Bash(cp channel_data.json channel_data.json.bak)"
+      "Bash(cp channel_data.json channel_data.json.bak)",
+      "Bash(curl -s https://digitalempiretv.com/)",
+      "Bash(curl -s https://digitalempiretv.com/api/status)",
+      "Bash(venv/bin/pip install *)",
+      "Bash(venv/bin/python -c \"import flask, google.cloud.storage; print\\('venv OK'\\)\")",
+      "Bash(kill 26970)",
+      "Read(//usr/local/bin/**)",
+      "Bash(/usr/local/bin/python3.12 -m venv venv)",
+      "Bash(venv/bin/python -c \"import flask, google.cloud.storage, psycopg2; print\\('venv OK py3.12'\\)\")",
+      "Bash(venv/bin/python -)",
+      "Bash(deploy \"self-updating channel data: daily cron -> /api/refresh \\(cron-gated\\) -> GCS snapshot, instances read GCS hourly\")"
     ]
   }
 }

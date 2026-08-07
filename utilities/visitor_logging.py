@@ -47,6 +47,8 @@ logger = logging.getLogger(__name__)
 BOT_SAMPLE_RATE = 0.02
 VISITOR_LOG_TTL_DAYS = 90
 TTL_PURGE_INTERVAL_SEC = 3600  # purge at most once per hour from any process
+TTL_PURGE_BATCH = 5000         # rows per DELETE — keeps each statement well under the 5s statement_timeout
+TTL_PURGE_MAX_BATCHES = 40     # safety cap (<=200k rows/cycle); a huge backlog drains over successive hours
 
 _KUMORI_PROJECT = 'kumori-404602'
 
@@ -66,11 +68,21 @@ def _get_db_creds() -> dict:
         path = f"projects/{_KUMORI_PROJECT}/secrets/{name}/versions/latest"
         return client.access_secret_version(request={"name": path}).payload.data.decode("UTF-8")
 
+    def fetch_or(primary: str, fallback: str) -> str:
+        # Loggers connect as the dedicated least-privilege telemetry_writer role
+        # (INSERT-only on the telemetry tables) rather than the shared postgres
+        # role, so an app's logger can never reach another tenant's data. Falls
+        # back to KUMORI_* until TELEMETRY_* is provisioned, so no flag day.
+        try:
+            return fetch(primary)
+        except Exception:
+            return fetch(fallback)
+
     _DB_CREDS_CACHE = {
         'host': fetch('KUMORI_POSTGRES_IP'),
         'dbname': fetch('KUMORI_POSTGRES_DB_NAME'),
-        'user': fetch('KUMORI_POSTGRES_USERNAME'),
-        'password': fetch('KUMORI_POSTGRES_PASSWORD'),
+        'user': fetch_or('TELEMETRY_POSTGRES_USERNAME', 'KUMORI_POSTGRES_USERNAME'),
+        'password': fetch_or('TELEMETRY_POSTGRES_PASSWORD', 'KUMORI_POSTGRES_PASSWORD'),
         'connection_name': fetch('KUMORI_POSTGRES_CONNECTION_NAME'),
     }
     return _DB_CREDS_CACHE
@@ -278,7 +290,7 @@ def append_bot_block(existing_robots_txt: str) -> str:
 # (max_connections=50 on the shared kumori instance, ~9k page views/hour during
 # peak GPTBot crawl = ~9k connect/close per hour from this module alone). On
 # 2026-05-08 that pattern combined with a deploy-time 2× instance overlap on
-# kicksaw saturated the pool and slowed sites portfolio-wide. This was a direct
+# one high-traffic app saturated the pool and slowed sites portfolio-wide. This was a direct
 # violation of db-speed-first/SKILL.md ("NEVER use direct psycopg2.connect()
 # without pooling").
 #
@@ -294,7 +306,7 @@ def append_bot_block(existing_robots_txt: str) -> str:
 # typically ~11. The budget table in db-speed-first should be amended to add:
 #     visitor_logging: 1/process across all sites
 # Stale-connection probe (SELECT 1) is mandatory before reuse — same fix that
-# resolved the kicksaw.io 2026-04-04 prod outage.
+# resolved a 2026-04-04 prod outage on a portfolio app.
 
 import queue as _q
 
@@ -313,7 +325,7 @@ def _get_persistent_conn():
 
     Cloud SQL drops idle connections after ~10 min and App Engine scales to 0,
     so we MUST do a SELECT 1 liveness probe before reusing — pattern from
-    db-speed-first/SKILL.md (the same fix that resolved the kicksaw.io
+    db-speed-first/SKILL.md (the same fix that resolved the portfolio-app
     2026-04-04 prod outage). `.closed` alone isn't enough: a TCP-half-open
     socket can read 0 from .closed yet fail on first execute()."""
     global _persistent_conn
@@ -347,8 +359,8 @@ def _flush_batch(rows):
         # executemany works for both psycopg2 and psycopg v3
         cur.executemany("""
             INSERT INTO kumori_ops.visitor_log
-                (app, path, ip, user_agent, referrer, is_bot, is_authed)
-            VALUES (%s, %s, %s, %s, %s, %s, %s)
+                (app, path, ip, user_agent, referrer, is_bot, is_authed, user_email)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
         """, rows)
         conn.commit()
     except Exception as e:
@@ -377,13 +389,25 @@ def _maybe_ttl_purge():
     try:
         conn = _get_persistent_conn()
         cur = conn.cursor()
-        cur.execute(
-            "DELETE FROM kumori_ops.visitor_log "
-            "WHERE viewed_at < NOW() - (%s || ' days')::interval",
-            (VISITOR_LOG_TTL_DAYS,),
-        )
-        deleted = cur.rowcount
-        conn.commit()
+        # Delete in bounded batches so a single statement never approaches the
+        # 5s statement_timeout, even with a large backlog, and only short locks
+        # are held on the shared kumori_ops.visitor_log table. A huge backlog
+        # drains across successive hourly cycles rather than one giant DELETE.
+        deleted = 0
+        for _ in range(TTL_PURGE_MAX_BATCHES):
+            cur.execute(
+                "DELETE FROM kumori_ops.visitor_log WHERE ctid IN ("
+                "  SELECT ctid FROM kumori_ops.visitor_log "
+                "  WHERE viewed_at < NOW() - (%s || ' days')::interval "
+                "  LIMIT %s)",
+                (VISITOR_LOG_TTL_DAYS, TTL_PURGE_BATCH),
+            )
+            n = cur.rowcount
+            conn.commit()
+            if n > 0:
+                deleted += n
+            if n < TTL_PURGE_BATCH:
+                break  # caught up — fewer than a full batch remained
         if deleted:
             logger.info(f"visitor_logging: TTL purged {deleted} rows older than {VISITOR_LOG_TTL_DAYS}d")
     except Exception as e:
@@ -433,13 +457,17 @@ def _ensure_flusher_started():
 
 
 def log_view(app_name: str, path: str, ip: str = '', user_agent: str = '',
-             referrer: str = '', is_authed: bool = False) -> None:
+             referrer: str = '', is_authed: bool = False,
+             user_email: str = '') -> None:
     """Enqueue one row. Returns immediately; insert happens in a batched
     flush on a daemon thread. Drops silently if the queue is at hard cap
     (acceptable for telemetry — never block a request on logging).
 
     Bot rows are sampled at BOT_SAMPLE_RATE (default 2%) — get_stats()
-    extrapolates back to true counts. Human rows always 100%."""
+    extrapolates back to true counts. Human rows always 100%.
+
+    user_email is captured ONLY when is_authed=True. Enables per-user path
+    forensics on .io admin pages without an email/Slack notification rail."""
     is_bot = _looks_like_bot(user_agent)
     if is_bot and random.random() >= BOT_SAMPLE_RATE:
         return  # sampled out
@@ -452,6 +480,7 @@ def log_view(app_name: str, path: str, ip: str = '', user_agent: str = '',
         (referrer or '')[:1000],
         is_bot,
         bool(is_authed),
+        (user_email or '').lower()[:320] or None,
     )
     try:
         _log_queue.put_nowait(row)
@@ -466,7 +495,7 @@ def log_view(app_name: str, path: str, ip: str = '', user_agent: str = '',
 # dashboard itself, which would create a feedback loop). Expanded 2026-05-08
 # after seeing internal cron / polling endpoints dominate "humans" stats —
 # galactica's /api/crew/mission/*, dandy's /cron/check-email, wattson's
-# /api/cron/poll, kicksaw's /api/time-pulse/* etc. were all logged as
+# /api/cron/poll, one app's /api/time-pulse/* etc. were all logged as
 # "humans" because they pass UA-based bot detection.
 _SKIP_PATH_PREFIXES = (
     '/static/',
@@ -506,6 +535,20 @@ def install_middleware(flask_app, app_name: str, *,
 
     auth_fn = authed_check or _default_authed
 
+    def _default_email():
+        try:
+            # When admin is mimicking, attribute the visit to the REAL admin
+            # not the mimicked target. Otherwise visitor_log would show "Kenny
+            # visited X" when Andy was actually mimicking Kenny — confusing for
+            # forensics. Surface the target in the path-drawer view separately.
+            real = session.get('_real_user')
+            if real and real.get('email'):
+                return (real['email'] or '').lower()
+            u = session.get('user') or {}
+            return (u.get('email') or '').lower()
+        except Exception:
+            return ''
+
     @flask_app.before_request
     def _visitor_log_hook():
         try:
@@ -517,13 +560,15 @@ def install_middleware(flask_app, app_name: str, *,
                     return None
             ip = (request.headers.get('X-Forwarded-For') or
                   request.remote_addr or '').split(',')[0].strip()
+            authed = bool(auth_fn())
             log_view(
                 app_name=app_name,
                 path=path,
                 ip=ip,
                 user_agent=request.headers.get('User-Agent', ''),
                 referrer=request.headers.get('Referer', ''),
-                is_authed=bool(auth_fn()),
+                is_authed=authed,
+                user_email=_default_email() if authed else '',
             )
         except Exception as e:
             logger.warning(f"visitor_logging hook error: {e}")

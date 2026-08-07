@@ -1,0 +1,5 @@
+cron:
+- description: daily channel data refresh (writes snapshot to GCS)
+  url: /api/refresh
+  schedule: every day 06:00
+  timezone: America/Los_Angeles
