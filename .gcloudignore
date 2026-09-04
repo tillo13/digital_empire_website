@@ -1,0 +1,110 @@
+# This file specifies files that will NOT be uploaded to Google Cloud Platform
+# using gcloud. It follows the same syntax as .gitignore, with the addition of
+# "#!include" directives (which insert the entries of the given .gitignore-style
+# file at that point).
+#
+# For more information, run:
+#   $ gcloud topic gcloudignore
+#
+.gcloudignore
+
+# If you would like to upload your .git directory, .gitignore file or files
+# from your .gitignore file, remove the corresponding line below:
+.git
+.gitignore
+
+# Python pycache:
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments (IMPORTANT - this prevents venv upload):
+venv/
+env/
+ENV/
+.venv/
+.env
+*.env
+
+# Local development files:
+.env.local
+.env.development
+.env.test
+.env.production
+
+# IDE files:
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files:
+.DS_Store
+Thumbs.db
+
+# Test files:
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+*.cover
+.hypothesis/
+
+# Documentation:
+docs/
+*.md
+!README.md
+
+# Build files:
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Temporary files:
+*.log
+*.tmp
+*.temp
+tmp/
+temp/
+
+# Local scripts and data:
+update_prod_values.py
+setup.sh
+setup_alternatives.md
+UPDATE_CHECKLIST.md
+*.bak
+*.backup
+
+# Database files:
+*.db
+*.sqlite
+*.sqlite3
+
+# Package files:
+*.tar.gz
+*.zip
+
+# Node modules (if any):
+node_modules/
+
+# Jupyter notebooks:
+*.ipynb
+.ipynb_checkpoints/
+
+# Private operational code (not part of the Flask app):
+_private/
+
+# Scratch + verification scripts (run locally, never served):
+_oneoff/
+
+# Separate projects that happen to be in this directory:
+youtube_market_analyzer/
+redninja/
+
+# Other unnecessary files:
+.python-version
+.pyenv/
+pip-log.txt
+pip-delete-this-directory.txt

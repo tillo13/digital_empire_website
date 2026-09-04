@@ -30,7 +30,6 @@ Thumbs.db
 *.log
 
 # Google Cloud
-.gcloudignore
 
 # OAuth credentials and tokens (NEVER commit these)
 credentials.json
@@ -68,3 +67,10 @@ channel_data.json
 *.flac
 *.ogg
 *.opus
+
+# editor/trim backups
+*.bak_*
+# .gcloudignore is deployment configuration and belongs in version control.
+# Gitignoring it made the exclusion list machine-local: a fresh clone would
+# deploy with no exclusions at all. Found 2026-09-04, when an archived MP4 that
+# .gcloudignore should have caught stalled three kicksaw releases.
