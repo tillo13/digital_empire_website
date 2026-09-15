@@ -1,9 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Bash(grep -l \"type.*hint\\\\|def.*->\" /Users/at/Desktop/code/digital_empire_tv/*.py)",
-      "Bash(head -20 /Users/at/Desktop/code/digital_empire_tv/templates/*.html)",
-      "Bash(head -30 /Users/at/Desktop/code/digital_empire_tv/static/js/*.js)"
-    ]
-  }
-}
