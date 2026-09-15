@@ -3,26 +3,7 @@
     "allow": [
       "Bash(grep -l \"type.*hint\\\\|def.*->\" /Users/at/Desktop/code/digital_empire_tv/*.py)",
       "Bash(head -20 /Users/at/Desktop/code/digital_empire_tv/templates/*.html)",
-      "Bash(wc:*)",
-      "Bash(head -30 /Users/at/Desktop/code/digital_empire_tv/static/js/*.js)",
-      "Bash(grep:*)",
-      "Bash(FILTER_BRANCH_SQUELCH_WARNING=1 git filter-branch -f --msg-filter 'sed \"/Co-Authored-By: Claude/d\" | sed \"/^$/d\"' c02f27b^..HEAD)",
-      "Bash(curl -s --max-time 10 https://digitalempiretv.com/api/status)",
-      "Bash(mkdir -p _oneoff)",
-      "Bash(cp channel_data.json channel_data.json.bak)",
-      "Bash(curl -s https://digitalempiretv.com/)",
-      "Bash(curl -s https://digitalempiretv.com/api/status)",
-      "Bash(venv/bin/pip install *)",
-      "Bash(venv/bin/python -c \"import flask, google.cloud.storage; print\\('venv OK'\\)\")",
-      "Bash(kill 26970)",
-      "Read(//usr/local/bin/**)",
-      "Bash(/usr/local/bin/python3.12 -m venv venv)",
-      "Bash(venv/bin/python -c \"import flask, google.cloud.storage, psycopg2; print\\('venv OK py3.12'\\)\")",
-      "Bash(venv/bin/python -)",
-      "Bash(deploy \"self-updating channel data: daily cron -> /api/refresh \\(cron-gated\\) -> GCS snapshot, instances read GCS hourly\")",
-      "Bash(curl -s -o /dev/null -w '%{http_code}' https://digitalempiretv.com/api/refresh)",
-      "Bash(echo \"refresh gate: $\\(curl -s -o /dev/null -w '%{http_code}' https://digitalempiretv.com/api/refresh\\)\")",
-      "Bash(curl -s https://digitalempiretv.com/ -o /dev/null -w \"index: %{http_code}\\\\n\")"
+      "Bash(head -30 /Users/at/Desktop/code/digital_empire_tv/static/js/*.js)"
     ]
   }
 }
