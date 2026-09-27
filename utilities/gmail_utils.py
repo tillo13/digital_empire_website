@@ -67,7 +67,7 @@ def get_gmail_credentials() -> Dict[str, str]:
     try:
         return {
             'user': get_secret_version(PROJECT_ID, GMAIL_USERNAME_SECRET_ID),
-            'password': get_secret_version(PROJECT_ID, GMAIL_APP_PASSWORD_SECRET_ID),
+            'password': None,  # Gmail API send since 2026-09-27; the app password is retired
         }
     except Exception as e:
         logger.error(f"Failed to load Gmail credentials: {e}")
