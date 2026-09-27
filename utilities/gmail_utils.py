@@ -141,11 +141,14 @@ def send_email(
                 message.attach(part)
         
         # Send email
-        with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server:
-            server.login(gmail_user, gmail_password)
-            server.send_message(message)
-            logger.info(f"Email sent successfully to {', '.join(to_emails)}")
-            return True
+        # Gmail API through kumori's canonical sender (vendored as utilities/kumori_gmail.py): Google
+        # refuses the SMTP app-password login as of 2026-09-27 (connection dropped at login).
+        import base64
+        from utilities.kumori_gmail import _get_service
+        _get_service().users().messages().send(
+            userId='me', body={'raw': base64.urlsafe_b64encode(message.as_bytes()).decode()}).execute()
+        logger.info(f"Email sent successfully to {', '.join(to_emails)}")
+        return True
             
     except Exception as e:
         logger.error(f"Failed to send email: {e}")

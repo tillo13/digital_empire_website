@@ -16,6 +16,14 @@
     {
       "src": "gtag/gtag.py",
       "dst": "utilities/gtag.py"
+    },
+    {
+      "src": "kumori/utilities/gmail_utils.py",
+      "dst": "utilities/kumori_gmail.py"
+    },
+    {
+      "src": "kumori/utilities/mail_guard.py",
+      "dst": "utilities/mail_guard.py"
     }
   ]
 }
